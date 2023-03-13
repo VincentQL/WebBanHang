@@ -51,24 +51,14 @@ class HomeBanner extends Component {
             <StyledHomeBanner className="div-banner">
 
                 <Slider {...settings}>
-                    {/* <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
-                    </div>
                     <div>
                         <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
                     </div>
                     <div>
                         <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
-                    </div> */}
-
-                    <div>
-                        {<img src="https://file.hstatic.net/200000000131/collection/mdw1-bannerhome-d_d67ed57f13044241b5a8b781dfdd2511.jpg" alt="bannerTree" className="banner" />}
                     </div>
                     <div>
-                        {<img src="https://js0fpsb45jobj.vcdn.cloud/storage/upload/media/banner/2023/03022023/07/top-1600x635.png" alt="bannerTree" className="banner" />}
-                    </div>
-                    <div>
-                        {<img src="https://theme.hstatic.net/200000182297/1000887316/14/ms_banner_img1.jpg?v=510" alt="bannerTree" className="banner" />}
+                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
                     </div>
                 </Slider>
             </StyledHomeBanner>
