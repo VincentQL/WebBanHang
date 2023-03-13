@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Logo from "./../images/logo/4.png"
+import Logo from "./../images/logo/NHOM17.png"
 import { Link } from "react-router-dom";
 
 function Header() {

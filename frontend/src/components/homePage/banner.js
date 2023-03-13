@@ -51,16 +51,6 @@ class HomeBanner extends Component {
             <StyledHomeBanner className="div-banner">
 
                 <Slider {...settings}>
-                    {/* <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
-                    </div>
-                    <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
-                    </div>
-                    <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
-                    </div> */}
-
                     <div>
                         {<img src="https://file.hstatic.net/200000000131/collection/mdw1-bannerhome-d_d67ed57f13044241b5a8b781dfdd2511.jpg" alt="bannerTree" className="banner" />}
                     </div>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Logo from "./../../images/logo/NHOM6.png"
+import Logo from "./../../images/logo/NHOM17.png"
 
 import sandalduramo1 from "./../../images/product/sandalduramo1.jpg"
 import "./sanpham.css"
@@ -7,41 +7,41 @@ import "./sanpham.css"
 function Cothebansethich() {
     const bansethich = [
         {
-          id: 1,
-          token: "bansethich-1",
-          name: "Giày sandan",
-          img: sandalduramo1,
-          price: 600000,
+            id: 1,
+            token: "bansethich-1",
+            name: "Giày sandan",
+            img: sandalduramo1,
+            price: 600000,
         },
         {
-          id: 2,
-          token: "bansethich-2",
-          name: "adidas stansmith",
-          img: sandalduramo1,
-          price: 9000000,
+            id: 2,
+            token: "bansethich-2",
+            name: "adidas stansmith",
+            img: sandalduramo1,
+            price: 9000000,
         },
         {
-          id: 3,
-          token: "bansethich-3",
-          name: "giày bóng đá",
-          img: sandalduramo1,
-          price: 1200000,
+            id: 3,
+            token: "bansethich-3",
+            name: "giày bóng đá",
+            img: sandalduramo1,
+            price: 1200000,
         },
         {
-          id: 4,
-          token: "bansethich-4",
-          name: "tất",
-          img: sandalduramo1,
-          price: 200000,
+            id: 4,
+            token: "bansethich-4",
+            name: "tất",
+            img: sandalduramo1,
+            price: 200000,
         },
-      ];
-      const renderProduct = () => {
+    ];
+    const renderProduct = () => {
         return bansethich.map((item, i) => {
             return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                 <div className="product__new-item">
                     <div className="card" style={{ width: "100%" }}>
                         <div>
-                            <img className="card-img-top" src={item.img} alt={item.img}  />
+                            <img className="card-img-top" src={item.img} alt={item.img} />
 
                         </div>
                         <div className="card-body">
@@ -106,10 +106,10 @@ function Cothebansethich() {
 
     return (
         <div>
-          <div className="product__yml">
+            <div className="product__yml">
                 <h3 className="product__yml title-product">Có thể bạn sẽ thích</h3>
-                <div className="row" id = "listProductYml">
-                   {renderProduct()}
+                <div className="row" id="listProductYml">
+                    {renderProduct()}
                 </div>
             </div>
 

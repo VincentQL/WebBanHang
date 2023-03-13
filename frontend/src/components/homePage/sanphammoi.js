@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Logo from "./../../images/logo/NHOM6.png"
+import Logo from "./../../images/logo/NHOM17.png"
 
 import ambush1 from "./../../images/product/ambush1.jpg"
 import aohoodie1 from "./../../images/product/aohoodie1.jpg"
