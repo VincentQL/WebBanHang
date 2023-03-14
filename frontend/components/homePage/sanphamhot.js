@@ -1,47 +1,51 @@
 import styled from 'styled-components';
+<<<<<<< HEAD
 import Logo from "./../../images/logo/NHOM17.png"
+=======
+import Logo from "./../../images/logo/NHOM6.png"
+>>>>>>> b25011eb3a0b705aa4c29cf18607a0de1ae14787
 
-import sandalduramo1 from "./../../images/product/sandalduramo1.jpg"
+import vaymidi1 from "./../../images/product/vaymidi1.jpg"
 import "./sanpham.css"
 
-function Cothebansethich() {
-    const bansethich = [
+function Sanphamhot() {
+    const sanphamhot = [
         {
             id: 1,
-            token: "bansethich-1",
-            name: "Giày sandan",
-            img: sandalduramo1,
-            price: 600000,
+            token: "sanphamhot-1",
+            name: "Giày giả váy",
+            img: vaymidi1,
+            price: 900000,
         },
         {
             id: 2,
-            token: "bansethich-2",
-            name: "adidas stansmith",
-            img: sandalduramo1,
-            price: 9000000,
+            token: "sanphamhot-2",
+            name: "giày ultra",
+            img: vaymidi1,
+            price: 1000000,
         },
         {
             id: 3,
-            token: "bansethich-3",
-            name: "giày bóng đá",
-            img: sandalduramo1,
-            price: 1200000,
+            token: "sanphamhot-3",
+            name: "balo",
+            img: vaymidi1,
+            price: 800000,
         },
         {
             id: 4,
-            token: "bansethich-4",
-            name: "tất",
-            img: sandalduramo1,
-            price: 200000,
+            token: "sanphamhot-4",
+            name: "túi chéo",
+            img: vaymidi1,
+            price: 600000,
         },
     ];
     const renderProduct = () => {
-        return bansethich.map((item, i) => {
+        return sanphamhot.map((item, i) => {
             return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                 <div className="product__new-item">
                     <div className="card" style={{ width: "100%" }}>
                         <div>
-                            <img className="card-img-top" src={item.img} alt={item.img} />
+                            <img className="card-img-top" src={item.img} alt="Card image cap" />
 
                         </div>
                         <div className="card-body">
@@ -65,19 +69,19 @@ function Cothebansethich() {
                                     </div>
                                     <div className="select-swap">
                                         <div className="swatch-element" data-value="38" >
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-1`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-1`} name="mau"
                                                 value="S" />
-                                            <label for={`swatch-bansethich-${item.id}-1`} className="sd"><span>38</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-1`} className="sd"><span>38</span></label>
                                         </div>
                                         <div className="swatch-element" data-value="39">
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-2`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-2`} name="mau"
                                                 value="M" />
-                                            <label for={`swatch-bansethich-${item.id}-2`} className="sd"><span>39</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-2`} className="sd"><span>39</span></label>
                                         </div>
                                         <div className="swatch-element" data-value="40">
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-3`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-3`} name="mau"
                                                 value="L" />
-                                            <label for={`swatch-bansethich-${item.id}-3`} className="sd"><span>40</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-3`} className="sd"><span>40</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -106,9 +110,9 @@ function Cothebansethich() {
 
     return (
         <div>
-            <div className="product__yml">
-                <h3 className="product__yml title-product">Có thể bạn sẽ thích</h3>
-                <div className="row" id="listProductYml">
+            <div className="product__sale">
+                <h3 className="product__sale title-product">Top sản phẩm hot</h3>
+                <div className="row" id="listProductSale">
                     {renderProduct()}
                 </div>
             </div>
@@ -118,4 +122,4 @@ function Cothebansethich() {
     );
 }
 
-export default Cothebansethich;
+export default Sanphamhot;
