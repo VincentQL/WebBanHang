@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import Logo from "./../images/logo/NHOM6.png"
+import Logo from "./../../images/logo/NHOM6.png"
 
-import sandalduramo1 from "./../../images/product/sandalduramo1.jpg"
+import vaymidi1 from "./../../images/product/vaymidi1.jpg"
 import "./sanpham.css"
 
-function Cothebansethich() {
-    const bansethich = [
+function Sanphamhot() {
+    const sanphamhot = [
         {
             id: 1,
             token: "sanphamhot-1",
@@ -37,11 +37,12 @@ function Cothebansethich() {
     ];
     const renderProduct = () => {
         return sanphamhot.map((item, i) => {
-            return (<div className="col-lg-3 col-md-6 col-sm-12 mb-20">
+            return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                 <div className="product__new-item">
                     <div className="card" style={{ width: "100%" }}>
                         <div>
-                            <img className="card-img-top" src={item.img} alt={item.img} />
+                            <img className="card-img-top" src={item.img} alt="Card image cap" />
+
                         </div>
                         <div className="card-body">
                             <h5 className="card-title custom__name-product">
@@ -64,19 +65,19 @@ function Cothebansethich() {
                                     </div>
                                     <div className="select-swap">
                                         <div className="swatch-element" data-value="38" >
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-1`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-1`} name="mau"
                                                 value="S" />
-                                            <label for={`swatch-bansethich-${item.id}-1`} className="sd"><span>38</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-1`} className="sd"><span>38</span></label>
                                         </div>
                                         <div className="swatch-element" data-value="39">
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-2`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-2`} name="mau"
                                                 value="M" />
-                                            <label for={`swatch-bansethich-${item.id}-2`} className="sd"><span>39</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-2`} className="sd"><span>39</span></label>
                                         </div>
                                         <div className="swatch-element" data-value="40">
-                                            <input type="radio" className="variant-1" id={`swatch-bansethich-${item.id}-3`} name="mau"
+                                            <input type="radio" className="variant-1" id={`swatch-sanphamhot-${item.id}-3`} name="mau"
                                                 value="L" />
-                                            <label for={`swatch-bansethich-${item.id}-3`} className="sd"><span>40</span></label>
+                                            <label for={`swatch-sanphamhot-${item.id}-3`} className="sd"><span>40</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -117,4 +118,4 @@ function Cothebansethich() {
     );
 }
 
-export default Cothebansethich;
+export default Sanphamhot;

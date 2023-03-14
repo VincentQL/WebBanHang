@@ -51,9 +51,9 @@ class HomeBanner extends Component {
             <StyledHomeBanner className="div-banner">
 
                 <Slider {...settings}>
-                    <div>
+                    {/* <div>
                         {<img src="https://file.hstatic.net/200000000131/collection/mdw1-bannerhome-d_d67ed57f13044241b5a8b781dfdd2511.jpg" alt="bannerTree" className="banner" />}
-                    </div>
+                    </div> */}
                     <div>
                         {<img src="https://js0fpsb45jobj.vcdn.cloud/storage/upload/media/banner/2023/03022023/07/top-1600x635.png" alt="bannerTree" className="banner" />}
                     </div>

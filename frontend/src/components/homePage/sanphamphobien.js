@@ -1,9 +1,5 @@
 import styled from 'styled-components';
-<<<<<<< HEAD
-import Logo from "./../../images/logo/NHOM17.png"
-=======
 import Logo from "./../../images/logo/NHOM6.png"
->>>>>>> b25011eb3a0b705aa4c29cf18607a0de1ae14787
 
 import addidas1 from "./../../images/product/addidas1.jpg"
 
@@ -74,7 +70,7 @@ function Sanphamphobien() {
                         </div>
                     </div>
 
-
+                   
                 </div>
             </div>
         </div>
