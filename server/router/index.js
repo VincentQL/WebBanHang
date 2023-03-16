@@ -1,9 +1,9 @@
 
-const homeRouter = require('./homeRouter')
+const adminRouter = require('./admin')
 
 
 function route(app) {
-    app.use('/', homeRouter)
+    app.use('/', adminRouter)
     
 }
 
