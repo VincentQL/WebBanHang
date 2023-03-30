@@ -9,7 +9,7 @@ import BodyQuan from './components/quan/bodyQuan';
 import DangNhap from './components/login/dangnhap';
 import DangKy from './components/login/dangky';
 import GioHang from './components/giohang/giohang';
-import CongDong from './components/congdong/congdong';
+import DetailProduct from './components/detailProduct';
 
 function App() {
     return (
@@ -24,7 +24,7 @@ function App() {
                     <Route path='/dangnhap' element={<DangNhap />} />
                     <Route path='/dangky' element={<DangKy />} />
                     <Route path='/giohang' element={<GioHang />} />
-                    <Route path='/congdong' element={<CongDong />} />
+                    <Route path = '/detail' element = {<DetailProduct/>}/>
                 </Routes>
                 <Footer />
             </div>

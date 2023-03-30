@@ -2,76 +2,95 @@
 
 :root {
     --white-color: #fff;
-    --black-color:#000;
-    --text-color:#333;
+    --black-color: #000;
+    --text-color: #333;
     --header-height: 160px;
-    --hover-color:#ce3f3f;
+    --hover-color: #ce3f3f;
     --blue-color: blue;
     --green-color: green;
     --gray-color: gray;
-    --yellow-color:yellow;
+    --yellow-color: yellow;
     --red-color: red;
-    --orange-color:orange;
-    --violet-color:violet;
+    --orange-color: orange;
+    --violet-color: violet;
 }
+
 * {
-    box-sizing: inherit;/*kế thừa*/
+    box-sizing: inherit;
+    /*kế thừa*/
 }
+
 html {
     font-size: 62.5%;
     line-height: 1.6rem;
-    font-family: 'Roboto', sans-serif;/*bỏ dấu gạch chân của chữ*/
+    font-family: 'Roboto', sans-serif;
+    /*bỏ dấu gạch chân của chữ*/
     box-sizing: border-box;
 }
+
 .green {
     background-color: green;
 }
+
 .white {
     background-color: #fff;
 }
+
 .black {
     background-color: #000;
 }
+
 .blue {
     background-color: blue;
 }
+
 .gray {
     background-color: gray;
 }
+
 .yellow {
     background-color: yellow;
 }
+
 .red {
     background-color: red;
 }
+
 .orange {
     background-color: orange;
 }
+
 .violet {
     background-color: violet;
 }
+
 .display {
     display: block;
     transition: 0.8s;
 }
+
 .undisplay {
     display: none;
     transition: 0.8s;
 }
+
 .white-color {
     color: #fff !important;
 }
-.btn-buynow:hover > .fi-rs-arrow-right {
+
+.btn-buynow:hover>.fi-rs-arrow-right {
     color: #000 !important;
 }
+
 body {
     overflow-x: hidden;
 }
+
 .custom__name-product {
     font-size: 1.4rem;
     font-weight: 500;
     line-height: 1.8rem;
-    margin-bottom:  10px;
+    margin-bottom: 10px;
     overflow: hidden;
     display: block;
     display: -webkit-box;
@@ -79,41 +98,53 @@ body {
     -webkit-line-clamp: 2;
     color: var(--black-color);
 }
+
 .title-news {
     font-size: 18px;
 }
+
 .card {
     border-radius: unset !important;
+    text-decoration: none;
+    color: black;
 }
+
 .img1 {
     display: block;
 }
+
 .img2 {
     display: none;
 }
+
 .card:hover .img2 {
     display: block;
 }
+
 .card:hover .img1 {
     display: none;
 }
+
 .product__new-item {
     color: var(--black-color);
 }
+
 .product__new-item:hover {
     text-decoration: none;
     color: var(--black-color);
 }
+
 .card-title {
     font-size: 18px;
     height: 54px;
 }
+
 .right {
     float: right;
 }
 
 .App {
-   
+
     font-family: "Poppins", sans-serif;
 }
 
@@ -124,7 +155,7 @@ body {
 }
 
 .header img {
-    height: 80px;
+    height: 92px;
 
 }
 
@@ -158,16 +189,15 @@ body {
 }
 
 .header__navbar {
-    margin-top: 24px;
-    height: 46px;
     display: flex;
-
+    font-weight: 500;
 }
 
 
 .navbar__items {
     list-style: none;
     justify-content: space-between;
+    margin: auto 12px;
 }
 
 .navbar__item {
@@ -178,7 +208,7 @@ body {
 }
 
 .trangchu {
-    margin: 0 12px;
+    margin: auto 12px;
     font-size: 18px;
     padding: 10px 0 15px 0;
     cursor: pointer;
@@ -189,6 +219,7 @@ body {
 .navbar__item a {
     text-decoration: none;
     color: black;
+
 }
 
 .navbar__item:hover a {
@@ -458,5 +489,3 @@ body {
     color: rgba(0, 0, 0, 0.3);
     cursor: pointer;
 }
-
-

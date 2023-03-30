@@ -1,23 +1,20 @@
 import Sanphamphobien from './sanphamphobien';
 import HomeBanner from './banner';
 import "./../index.css"
-import Sanphammoi from './sanphammoi';
-import Sanphamhot from './sanphamhot';
-import Cothebansethich from './cothebanthich';
+import ProductNew from '../productNew';
+import ProductSale from '../productSale';
+import ProductYouLike from "../productYouLike"
 
 function BodyHomePage() {
     return (
         <>
             <HomeBanner />
-
-
             <div>
                 <div className="product">
                     <div className="container">
                         <Sanphamphobien />
-                        <Sanphammoi />
-                        <Sanphamhot />
-
+                        <ProductNew/>
+                        <ProductSale/>
                         <section className="awe-section-9">
                             <div className="section_policy clearfix">
                                 <div className="col-12">
@@ -78,7 +75,7 @@ function BodyHomePage() {
                                 </div>
                             </div>
                         </section>
-                        <Cothebansethich />
+                        <ProductYouLike />
                     </div>
                 </div>
             </div>
