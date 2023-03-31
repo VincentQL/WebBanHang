@@ -9,8 +9,35 @@ import "./sanpham.css"
 
 
 
-function ProductNew() {
+function ProductNew({ shirt }) {
     const [localPath, setLocalPath] = useState()
+    const [product, setProduct] = useState([])
+    const [index, setIndex] = useState(0)
+
+    useEffect(() => {
+
+        async function fetchMyAPI() {
+            const config = {
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+
+            }
+            const response = await fetch("http://localhost:4000/admin/get-product", config)
+            const data = await response.json()
+            console.log("data", data)
+            setProduct({
+                shirt: data.shirt,
+                clothes: data.clothes,
+                shoes: data.shoes
+            });
+
+        }
+
+        fetchMyAPI()
+
+    }, [])
     useEffect(() => {
         async function fetchData() {
             console.log(window.location.pathname);
@@ -225,9 +252,9 @@ function ProductNew() {
     ];
 
     const renderProductNew = () => {
-        console.log('localPath', localPath)
+        console.log('shirt', shirt)
         if (localPath == '/ao') {
-            return aoNew.map((item, i) => {
+            return product.shirt && product.shirt.length > 0 && product.shirt.length > 0 && product.shirt.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
                         <div className="card" style={{ width: "100%" }}>
@@ -286,7 +313,7 @@ function ProductNew() {
                                 </div>
                             </div>
                             <div className="sale-off">
-                                <span className="sale-off-percent">20%</span>
+                                <span className="sale-off-percent">%</span>
                                 <span className="sale-off-label">GIẢM</span>
                             </div>
                         </div>
@@ -362,7 +389,7 @@ function ProductNew() {
                 </div>)
             })
         }
-        else if (localPath == '/giay'){
+        else if (localPath == '/giay') {
             return giayNew.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
@@ -431,10 +458,10 @@ function ProductNew() {
             })
         }
         else {
-            return sanphammoi.map((item, i) => {
+            return product.shirt && product.shirt.length > 0 && product.shirt.length > 0 && product.shirt.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
-                        <Link to = {`/detail/new/${item.id}`} className="card" style={{ width: "100%" }}>
+                        <Link to={`/detail/new/${item.id}`} className="card" style={{ width: "100%" }}>
                             <div>
                                 <img className="card-img-top" src={item.img} alt={item.img} />
 
