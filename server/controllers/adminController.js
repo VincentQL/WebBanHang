@@ -33,6 +33,7 @@ class AdminController {
     }
     // Thêm user
     createUser = async (req, res, next) => {
+        console.log("req.body", req.body)
         if (req.body) {
             let hashPassword = await bcrypt.hashSync(req.body.password, salt);
             req.body.password = hashPassword;
@@ -73,6 +74,7 @@ class AdminController {
     login = async (req, res, next) => {
         const account = req.body.account;
         const password = req.body.password;
+        console.log("req.body",req.body)
         if (!account || !password) {
             return res.status(500).json({
                 errCode: 1,
@@ -82,7 +84,6 @@ class AdminController {
             const user = await User.findOne({ account: account })
             if (user) {
                 let result = await bcrypt.compareSync(password, user.password);
-
                 if (result) {
                     return res.status(200).json({ errCode: 0, user: user });
                 }

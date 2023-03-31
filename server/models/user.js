@@ -7,6 +7,10 @@ const slug = require('mongoose-slug-generator');
 mongoose.plugin(slug)
 
 const User = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
     account: {
         type: String,
         required: true
@@ -24,7 +28,7 @@ const User = new mongoose.Schema({
         required: true
     },
     birthday: {
-        type: Date,
+        type: String,
         required: true
     },
     sex: {
@@ -36,7 +40,6 @@ const User = new mongoose.Schema({
         type: String,
         enum: ['Admin', 'Client'],
         required: true
-
     }
 }, {
 

@@ -50,7 +50,6 @@ const Shirt = new Schema({
     }
 
 
-
 }, {
 
     timestamps: true

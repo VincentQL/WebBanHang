@@ -849,7 +849,7 @@ ul .level1 li a:hover {
 }
 
 .active {
-    color: var(--hover-color) !important;
+    color: var(--hover-color) ;
 }
 
 /* sản phẩm phổ biến */

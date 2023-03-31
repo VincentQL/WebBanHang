@@ -4,8 +4,9 @@ const adminController = require('../controllers/adminController')
 
 router.get('/admin/get-product', adminController.getProduct)
 router.get('/admin/get-user', adminController.getUser)
-router.post('/admin/create-user', adminController.createUser)
+router.post('/admin/create-user', adminController.createUser) // path 
 router.post('/admin/create-product', adminController.createProduct)
+// post get put delete 
 
 // Login
 
