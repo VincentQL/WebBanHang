@@ -136,7 +136,7 @@ body {
 
 .card-title {
     font-size: 18px;
-    height: 54px;
+    height: 28px;
 }
 
 .right {
@@ -222,6 +222,11 @@ body {
 
 }
 
+.navbar__item .active {
+    color: skyblue;
+    font-weight: bold;
+}
+
 .navbar__item:hover a {
     color: skyblue;
     text-decoration: none;
@@ -255,6 +260,11 @@ body {
 
 .header-active .header__navbar .trangchu {
     display: none;
+}
+
+.header__navbar .active {
+    color: skyblue;
+    font-weight: bold;
 }
 
 .banner {

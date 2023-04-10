@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import Logo from "./../../images/logo/logo.png"
+import Logo from "./../../images/logo/NHOM6.png"
 
 import addidas1 from "./../../images/product/addidas1.jpg"
 
 
-function Sanphamphobien() {
+function Sanphamphobien({ setCart }) {
     const sanphamphobien = [
         {
             id: 1,
@@ -66,7 +66,7 @@ function Sanphamphobien() {
                     <div className="product_popular">
                         <h3 className="product__popular title-product">Sản phẩm phổ biến</h3>
                         <div className="row" id="spphobien">
-                            {renderProduct()}
+                            {renderProduct}
                         </div>
                     </div>
 

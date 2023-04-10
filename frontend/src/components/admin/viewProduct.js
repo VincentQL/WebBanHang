@@ -1,6 +1,7 @@
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 const OrderStyled = styled.div`
@@ -123,41 +124,59 @@ const OrderStyled = styled.div`
 }
 `
 function ViewProduct() {
-    const [product, setProduct] = useState([])
+    const navigate = useNavigate();
     const [index, setIndex] = useState(0)
+    const [product, setProduct] = useState([])
+    async function fetchMyAPI() {
+        const config = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        }
+        const response = await fetch("http://localhost:4000/admin/get-product", config)
+        const data = await response.json()
+        setProduct({
+            shirt: data.shirt,
+            clothes: data.clothes,
+            shoes: data.shoes
+        });
+    }
 
     useEffect(() => {
-
-        async function fetchMyAPI() {
-            const config = {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-
-            }
-            const response = await fetch("http://localhost:4000/admin/get-product", config)
-            const data = await response.json()
-            setProduct({
-                shirt: data.shirt,
-                clothes: data.clothes,
-                shoes: data.shoes
-            });
-        }
-
         fetchMyAPI()
 
     }, [])
 
+    const deleteProduct = async (type, id) => {
+        console.log('type, id', type, id)
+        // /admin/:type/:id/delete-product
+        const config = {
+            method: "DELETE", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+        await fetch(`http://localhost:4000/admin/${type}/${id}/delete-product`, config)
+        toast.success("Xóa sản phẩm thành công!")
+        fetchMyAPI()
+    }
+
     console.log(product)
+    const redirectLink = (item, link) => {
+        navigate(link, { replace: true });
+    }
 
     const renderListShirt = () => {
         let currentIndex = index
+
+
         return product.shirt && product.shirt.length > 0 && product.shirt.map((item) => {
             currentIndex++
             return (
                 <li className="admin-right-item col-xl-12" key={item._id}>
-                    <span className="admin-right-header-item col-xl-1">{index}</span>
+                    <span className="admin-right-header-item col-xl-1" style = {{ wordWrap: "break-word"}}>{item._id}</span>
                     <span className="admin-right-header-item col-xl-3">
                         {item.name}
                     </span>
@@ -165,104 +184,197 @@ function ViewProduct() {
                     <span className="admin-right-header-item col-xl-2">
                         Áo
                     </span>
+                    <div className="admin-right-header-item col-xl-2">
+                        <p>
+                            SizeS : {item.sizeS}
+                        </p>
+                        <p>
+                            sizeM : {item.sizeM}
+                        </p>
+                        <p>
+                            SizeL : {item.sizeL}
+                        </p>
+                    </div>
                     <span className="admin-right-header-item col-xl-2">
-                        {item.currentQuantity}
-                    </span>
-                    <span className="admin-right-header-item col-xl-2">
-                        <Link to={`/admin/item-order/type=$item.token?id=1`}>
-                            <button type="submit" className="btn btn-edit btn-all-item">
-                                Chỉnh sửa
+                        <div onClick={() => redirectLink(item, `/admin/edit-product?type=${item.type}&id=${item._id}`)}>
+                            {/* <button type="submit" className="btn btn-edit btn-all-item"> */}
+                            <button type="submit" className="btn btn-edit btn-all-item" >
+
+                                Sửa
                             </button>
-                        </Link>
+                        </div>
                     </span>
 
+
                     <span className="admin-right-header-item col-xl-2 bg-red">
-                        <Link to={`/admin/item-order/?token=$item.token`}>
-                            <button type="submit" className="btn btn-delete btn-all-item">
+                        <div to={`/admin/item-order/?token=$item.token`}>
+
+                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
-                        </Link>
+
+                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("shirt", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </span>
                 </li>
             );
         })
-        setIndex(currentIndex)
 
     };
     const renderListClothes = () => {
         let currentIndex = index
+
         return product.clothes && product.clothes.length > 0 && product.clothes.map((item) => {
             currentIndex++
+
             return (
                 <li className="admin-right-item col-xl-12" key={item._id}>
-                    <span className="admin-right-header-item col-xl-1">{index}</span>
+                    <span className="admin-right-header-item col-xl-1"style = {{ wordWrap: "break-word"}}>{item._id}</span>
                     <span className="admin-right-header-item col-xl-3">
                         {item.name}
                     </span>
 
                     <span className="admin-right-header-item col-xl-2">
-                        Áo
+                        Quần
                     </span>
+                    <div className="admin-right-header-item col-xl-2">
+                        <p>
+                            SizeS : {item.sizeS}
+                        </p>
+                        <p>
+                            sizeM : {item.sizeM}
+                        </p>
+                        <p>
+                            SizeL : {item.sizeL}
+                        </p>
+
+                    </div>
                     <span className="admin-right-header-item col-xl-2">
-                        {item.currentQuantity}
-                    </span>
-                    <span className="admin-right-header-item col-xl-2">
-                        <Link to={`/admin/item-order/type=$item.token?id=1`}>
+                        <div onClick={() => redirectLink(item, `/admin/edit-product?type=${item.type}&id=${item._id}`)}>
+
                             <button type="submit" className="btn btn-edit btn-all-item">
-                                Chỉnh sửa
+                                Sửa
                             </button>
-                        </Link>
+                        </div>
                     </span>
 
                     <span className="admin-right-header-item col-xl-2 bg-red">
-                        <Link to={`/admin/item-order/?token=$item.token`}>
-                            <button type="submit" className="btn btn-delete btn-all-item">
+                        <div to={`/admin/item-order/?token=$item.token`}>
+
+                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
-                        </Link>
+
+                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("clothes", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </span>
                 </li>
             );
         })
-        setIndex(currentIndex)
 
     };
     const renderListShoes = () => {
-        let currentIndex = index
+
         return product.shoes && product.shoes.length > 0 && product.shoes.map((item) => {
-            currentIndex++
+
             return (
                 <li className="admin-right-item col-xl-12" key={item._id}>
-                    <span className="admin-right-header-item col-xl-1">{index}</span>
+                    <span className="admin-right-header-item col-xl-1"style = {{ wordWrap: "break-word"}}>{item._id}</span>
                     <span className="admin-right-header-item col-xl-3">
                         {item.name}
                     </span>
 
                     <span className="admin-right-header-item col-xl-2">
-                        Áo
+                        Giày
                     </span>
+                    <div className="admin-right-header-item col-xl-2">
+                        <p>
+                            SizeS : {item.sizeS}
+                        </p>
+                        <p>
+                            sizeM : {item.sizeM}
+                        </p>
+                        <p>
+                            SizeL : {item.sizeL}
+                        </p>
+
+                    </div>
                     <span className="admin-right-header-item col-xl-2">
-                        {item.currentQuantity}
-                    </span>
-                    <span className="admin-right-header-item col-xl-2">
-                        <Link to={`/admin/item-order/type=$item.token?id=1`}>
+                        <div onClick={() => redirectLink(item, `/admin/edit-product?type=${item.type}&id=${item._id}`)}>
+
                             <button type="submit" className="btn btn-edit btn-all-item">
-                                Chỉnh sửa
+                                Sửa
                             </button>
-                        </Link>
+                        </div>
                     </span>
 
                     <span className="admin-right-header-item col-xl-2 bg-red">
-                        <Link to={`/admin/item-order/?token=$item.token`}>
-                            <button type="submit" className="btn btn-delete btn-all-item">
+                        <div to={`/admin/item-order/?token=$item.token`}>
+
+                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
-                        </Link>
+
+                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("shoes", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </span>
                 </li>
             );
         })
-        setIndex(currentIndex)
 
 
     };
@@ -290,7 +402,7 @@ function ViewProduct() {
                                     Số lượng còn lại
                                 </span>
                                 <span className="admin-right-header-item col-xl-2">
-                                    Chỉnh sửa
+                                    Sửa
                                 </span>
                                 <span className="admin-right-header-item col-xl-2">
                                     Xóa

@@ -1,8 +1,7 @@
-import styled from 'styled-components';
-import { Link } from "react-router-dom";
-import "./login.css"
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import "./login.css";
 
 function DangKy() {
     const [name, setName] = useState()
@@ -18,7 +17,7 @@ function DangKy() {
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
     };
-    const registered = async () => {    
+    const registered = async () => {
         console.log('click', name, mail, password, rePassword, address, numberPhone, birthday, sex)
         if (name && mail && password && rePassword && address && numberPhone && birthday && sex) {
             if (validateEmail(mail)) {
@@ -35,6 +34,14 @@ function DangKy() {
                         }
                         const response = await fetch("http://localhost:4000/admin/create-user", config)
                         console.log('response', response.data)
+                        const data = response.json()
+                        if (data.success) {
+                            toast.success("Bạn đã đăng kí thành công!!!")
+                        }
+                        else {
+                            toast.warn("Email đã được đăng kí vui lòng chọn mail khác!!!")
+
+                        }
                     }
                 }
                 else {
@@ -53,20 +60,6 @@ function DangKy() {
     }
     return (
         <div className="containers">
-            < ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-            {/* Same as */}
-            < ToastContainer />
             <h1>Đăng ký tài khoản</h1>
             <form>
                 <div className="form-controls">

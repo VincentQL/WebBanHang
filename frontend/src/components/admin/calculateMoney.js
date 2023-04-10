@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-const OrderStyled = styled.div`
+const CalculateStyled = styled.div`
     .admin-title {
   width: 100%;
   text-align: center;
@@ -113,8 +113,28 @@ const OrderStyled = styled.div`
   }
 }
 `
-function ViewOrder() {
+function CalculateMoney() {
     const [bills, setBills] = useState([])
+    function groupByTime(arr) {
+        const result = [];
+        let currentArr = [];
+
+        arr.forEach((obj, index) => {
+            if (index === 0) {
+                currentArr.push(obj);
+            } else if (obj.time === arr[index - 1].time) {
+                currentArr.push(obj);
+            } else {
+                result.push(currentArr);
+                currentArr = [obj];
+            }
+        });
+
+        result.push(currentArr);
+
+        return result;
+    }
+
     async function fetchMyAPI() {
         const config = {
             method: 'GET',
@@ -125,8 +145,10 @@ function ViewOrder() {
         }
         const response = await fetch("http://localhost:4000/admin/get-bill", config)
         const data = await response.json()
+        let arr = groupByTime(data.bills)
+
         setBills([])
-        setBills(data.bills);
+        setBills(arr);
     }
 
     useEffect(() => {
@@ -134,34 +156,66 @@ function ViewOrder() {
 
     }, [])
 
-    const updateBill = async (id) => {
-        console.log('id', id)
-        const config = {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
 
+    const renderStatus = (item) => {
+        if (item.status === 0) {
+            return (<>Chưa xác nhận</>)
         }
-        const response = await fetch(`http://localhost:4000/admin/${id}/update-bill`, config)
-        const data = await response.json()
-        if (data.success) {
-            toast.success("Xác nhận đơn hàng thành công")
-            fetchMyAPI()
+        if (item.status === 1) {
+            return (<>Đã xác nhận</>)
+        }
+        else {
+            return (<>Đã nhận hàng</>)
+
         }
     }
 
+    const renderDay = () => {
+        console.log('bills', bills)
+        return bills.length > 0 && bills.map((items, i) => {
+            let total = 0
+            items.map(item=>{
+                total += +item.price
+            })
+            return (
+                <ul className="table admin-right-items">
+                    <li className="admin-right-header col-xl-12">
+                        Tổng hợp đơn hàng ngày {items[0].time}
+                    </li>
+                    <li className="admin-right-header col-xl-12">
+                        <span className="admin-right-header-item col-xl-1">STT</span>
+                        <span className="admin-right-header-item col-xl-2">
+                            Tên khách
+                        </span>
+                        <span className="admin-right-header-item col-xl-3">
+                            Sản phẩm
+                        </span>
+                        <span className="admin-right-header-item col-xl-1">Tổng</span>
+                        <span className="admin-right-header-item col-xl-1">Trạng thái</span>
+                        <span className="admin-right-header-item col-xl-2">
+                            Thời gian
+                        </span>
+
+                    </li>
+                    {renderListProduct(items)}
+                    <li className="admin-right-header col-xl-12" >
+                        Tổng doanh thu: {total} VND
+                    </li>
+                </ul>)
+        })
+
+    };
+
     const renderListProduct = (arr) => {
-        return arr && arr.length > 0 && arr.map((item) => {
-            if (
-                item.status === 0
-            ) {
-                console.log('arr', arr, item)
+        return arr.length > 0 && arr.map((item, i) => {
+            if (item.status === 2) {
                 let user = JSON.parse(item.user)
                 let product = JSON.parse(item.arrProduct)
+                
+
                 return (
                     <li className="admin-right-item col-xl-12" key={item._id}>
-                        <span className="admin-right-header-item col-xl-1" style={{ wordBreak: "break-word" }}>{item._id}</span>
+                        <span className="admin-right-header-item col-xl-1" style={{ wordWrap: "break-word" }}>{item._id}</span>
                         <span className="admin-right-header-item col-xl-2">
                             {user.name}
 
@@ -176,32 +230,18 @@ function ViewOrder() {
 
                         </div>
                         <span className="admin-right-header-item col-xl-1"> {item.price}</span>
-                        <span className="admin-right-header-item col-xl-1"> Chưa xác nhận </span>
+                        <span className="admin-right-header-item col-xl-1"> {renderStatus(item)} </span>
                         <span className="admin-right-header-item col-xl-2">
                             {item.time}
                         </span>
-                        <span className="admin-right-header-item col-xl-2">
-                            <div>
-                                <button type="submit" className="btn btn-submit btn-all-item" onClick={() => updateBill(item._id)} style={{
-                                    width: "100%",
-                                    fontSize: "13px",
-                                    padding: "14px"
-                                }}>
-                                    Xác nhận
-                                </button>
-                            </div>
 
-                        </span>
-                    </li>
-                );
+                    </li>)
             }
         })
-
-    }
-
+    };
 
     return (
-        <OrderStyled>
+        <CalculateStyled>
             <div className="adminPage-body ">
                 <p className="admin-title">
                     <ReceiptIcon />
@@ -210,34 +250,15 @@ function ViewOrder() {
                 <div className="admin">
                     <div className="admin-right ">
                         <p className="admin-right-text">Thông tin đơn hàng</p>
-                        <ul className="table admin-right-items">
-                            <li className="admin-right-header col-xl-12">
-                                <span className="admin-right-header-item col-xl-1">STT</span>
-                                <span className="admin-right-header-item col-xl-2">
-                                    Tên khách
-                                </span>
-                                <span className="admin-right-header-item col-xl-3">
-                                    Sản phẩm
-                                </span>
-                                <span className="admin-right-header-item col-xl-1">Tổng</span>
-                                <span className="admin-right-header-item col-xl-1">Trạng thái</span>
-                                <span className="admin-right-header-item col-xl-2">
-                                    Thời gian
-                                </span>
-                                <span className="admin-right-header-item col-xl-2">
-                                    Xác nhận
-                                </span>
-                            </li>
-                            {renderListProduct(bills)}
 
-                        </ul>
+                        {renderDay()}
                     </div>
                 </div>
             </div>
-        </OrderStyled>
+        </CalculateStyled>
     );
 }
 
 
 
-export default ViewOrder;
+export default CalculateMoney;

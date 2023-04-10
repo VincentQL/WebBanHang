@@ -4,8 +4,12 @@ import "./../index.css"
 import ProductNew from '../productNew';
 import ProductSale from '../productSale';
 import ProductYouLike from "../productYouLike"
+import { useState, useEffect } from 'react';
 
-function BodyHomePage() {
+function BodyHomePage({ setCart }) {
+
+
+
     return (
         <>
             <HomeBanner />
@@ -13,8 +17,8 @@ function BodyHomePage() {
                 <div className="product">
                     <div className="container">
                         <Sanphamphobien />
-                        <ProductNew/>
-                        <ProductSale/>
+                        <ProductNew setCart={setCart} />
+                        <ProductSale setCart={setCart} />
                         <section className="awe-section-9">
                             <div className="section_policy clearfix">
                                 <div className="col-12">
@@ -75,7 +79,7 @@ function BodyHomePage() {
                                 </div>
                             </div>
                         </section>
-                        <ProductYouLike />
+                        <ProductYouLike setCart = {setCart}/>
                     </div>
                 </div>
             </div>

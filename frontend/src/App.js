@@ -20,6 +20,12 @@ import DangKy from './components/login/dangky';
 import DangNhap from './components/login/dangnhap';
 import BodyQuan from './components/quan/bodyQuan';
 import UserAccount from './components/userAccount';
+import EditUser from './components/admin/editUser';
+import EditProduct from './components/admin/editProduct';
+import { ToastContainer, toast } from 'react-toastify';
+import CalculateMoney from './components/admin/calculateMoney';
+import HistoryOrder from './components/admin/historyOrder';
+import AddSale from './components/admin/addSale';
 
 
 const AdminPageStyled = styled.div`
@@ -121,35 +127,60 @@ function App() {
     const [isAdmin, setIsAdmin] = useState(false)
     const [profile, setProfile] = useState()
     const [statusLogin, setStatusLogin] = useState(false)
+    const [productEdit, setProductEdit] = useState()
+    const [cart, setCart] = useState([])
+    const [productInCart, setProductInCart] = useState([])
 
     useEffect(() => {
         async function fetchData() {
             setIsLogin(localStorage.getItem('isLogin'))
             setProfile(localStorage.getItem('profile'))
             setIsAdmin(localStorage.getItem('isAdmin'))
-
         }
         fetchData();
     }, [statusLogin]);
-    console.log('isLogin', isLogin)
+    useEffect(() => {
+        let result = [];
+        cart.forEach(function (a) {
+            if (!this[a.item._id]) {
+                this[a.item._id] = { id: a.item._id, sizeS: 0, sizeM: 0, sizeL: 0, item: a.item };
+                result.push(this[a.item._id]);
+            }
+            if (a.size === 'S') {
+                this[a.item._id].sizeS += Number(a.amount);
+            }
+            else if (a.size == 'M') {
+                this[a.item._id].sizeM += Number(a.amount);
+            }
+            else if (a.size == 'L') {
+                this[a.item._id].sizeL += Number(a.amount);
+            }
+        }, Object.create(null));
+        setProductInCart(result)
+        console.log(result);
+
+    }, [cart]);
     const renderMainPage = () => {
         if (isLogin && isAdmin) {
             return <AdminPageStyled>
                 <Router>
-
                     <div className={"adminPage col-xl-12 d-flex"}>
                         <AdminDashboard statusLogin={statusLogin} setStatusLogin={setStatusLogin} />
                         <div style={{ width: "100%" }}>
                             <Routes>
                                 <Route path='admin/order' element={isLogin ? <ViewOrder /> : <NotFound />} />
                                 <Route path='admin/add-user' element={<AddUser />} />
+                                <Route path='admin/revenue' element={<CalculateMoney />} />
+                                <Route path='admin/edit-user/:id' element={<EditUser />} />
                                 <Route path='admin/add-product' element={<AddProduct />} />
-                                <Route path='admin/view-products' element={<ViewProduct />} />
+                                <Route path='admin/edit-product' element={<EditProduct productEdit={productEdit} />} />
+                                <Route path='admin/view-products' element={<ViewProduct setProductEdit={setProductEdit} />} />
                                 <Route path='admin/view-users' element={<ViewUsers />} />
-                                
+                                <Route path='admin/history' element={<HistoryOrder />} />
+                                <Route path='admin/sale' element={<AddSale />} />
                                 <Route path='*' exact={true} element={<NotFound />} />
 
-                                
+
                             </Routes>
                         </div>
                     </div>
@@ -161,13 +192,13 @@ function App() {
                 <div >
                     <Header isLogin={isLogin} isAdmin={isAdmin} />
                     <Routes>
-                        <Route path='/' element={<BodyHomePage />} />
-                        <Route path='/shirt' element={<BodyAo />} />
-                        <Route path='/clothes' element={<BodyQuan />} />
-                        <Route path='/shoes' element={<BodyGiay />} />
+                        <Route path='/' element={<BodyHomePage setCart={setCart} />} />
+                        <Route path='/shirt' element={<BodyAo setCart={setCart} />} />
+                        <Route path='/clothes' element={<BodyQuan setCart={setCart} />} />
+                        <Route path='/shoes' element={<BodyGiay setCart={setCart} />} />
                         <Route path='/login' element={<DangNhap statusLogin={statusLogin} setStatusLogin={setStatusLogin} setIsLogin={setIsLogin} />} />
                         <Route path='/register' element={<DangKy />} />
-                        <Route path='/cart' element={<GioHang />} />
+                        <Route path='/cart' element={<GioHang listproducts={cart} setCart={setCart} sortCart={productInCart} userLoggedIn={isLogin} />} />
                         <Route path='/detail' element={<DetailProduct />} />
                         <Route path="/profile" element={isLogin ? <UserAccount statusLogin={statusLogin} setStatusLogin={setStatusLogin} /> : <NotFound />} />
                         <Route path='*' exact={true} element={<NotFound />} />
@@ -182,6 +213,20 @@ function App() {
     }
     return (
         <>
+            < ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            {/* Same as */}
+            < ToastContainer />
             <>{renderMainPage()}</>
 
         </>

@@ -1,6 +1,7 @@
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import * as React from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 const OrderStyled = styled.div`
@@ -123,85 +124,134 @@ const OrderStyled = styled.div`
 }
 `
 function ViewUsers() {
-   const renderListUsers = () => {
-    return (
-        <li className="admin-right-item col-xl-12" key={`item`}>
-            <span className="admin-right-header-item col-xl-1">{1}</span>
-            <span className="admin-right-header-item col-xl-3">
-                Nguyễn Văn A
-            </span>
-          
-            <span className="admin-right-header-item col-xl-2">
-                nguyenvana@gmail.com
-            </span>
-            <span className="admin-right-header-item col-xl-2">
-                User
-            </span>
-            <span className="admin-right-header-item col-xl-2">
-                <Link to={`/admin/item-user/id=1`}>
-                    <button type="submit" className="btn btn-edit btn-all-item">
-                        Xác nhận
-                    </button>
-                </Link>
-            </span>
+    const [users, setUsers] = useState([])
+    async function fetchMyAPI() {
+        const config = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
 
-            <span className="admin-right-header-item col-xl-2 bg-red">
-                <Link to={`/admin/item-order/?token=$item.token`}>
-                    <button type="submit" className="btn btn-delete btn-all-item">
-                        Xác nhận
-                    </button>
-                </Link>
-            </span>
-        </li>
-    );
-        //     return (
-        //         <li className="admin-right-item col-xl-12">
-        //             <p className="text-cart">Hiện tại không có đơn, nhưng tí nữa sẽ có!!!</p>
+        }
+        const response = await fetch("http://localhost:4000/admin/get-user", config)
+        const data = await response.json()
+        setUsers(data.users);
+    }
+    useEffect(() => {
+        fetchMyAPI()
 
-        //         </li>
-        //     );
-    
+    }, [])
 
-        // return result;
+    const deleteUser = async (id) => {
+        console.log('id', id)
+        const config = {
+            method: "DELETE", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+        const response = await fetch(`http://localhost:4000/admin/${id}/delete-user`, config)
+        toast.success("Xóa người dùng thành công!")
+        fetchMyAPI()
+    }
+
+    const renderListUsers = () => {
+
+        return users.map((item, index) => {
+            return (
+                <li className="admin-right-item col-xl-12" key={item._id}>
+                    <span className="admin-right-header-item col-xl-1">{index}</span>
+                    <span className="admin-right-header-item col-xl-3">
+                        {item.name}
+                    </span>
+
+                    <span className="admin-right-header-item col-xl-2">
+                        {item.account}
+                    </span>
+                    <span className="admin-right-header-item col-xl-2">
+                        {item.role}
+                    </span>
+                    <span className="admin-right-header-item col-xl-2">
+                        <Link to={`/admin/edit-user/${item._id}`}>
+                            <button type="submit" className="btn btn-edit btn-all-item">
+                                Sửa
+                            </button>
+                        </Link>
+                    </span>
+
+                    <span className="admin-right-header-item col-xl-2 bg-red">
+                        <div to={`/admin/item-order/?token=$item.token`}>
+
+                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
+                                Xóa
+                            </button>
+
+                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa người dùng {item.account}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Bạn có chắc là muốn xóa người dùng {item.account} khỏi danh sách user. Thao tác này không thể hoàn lại!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteUser(item._id)} data-dismiss="modal">Đồng ý</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </span>
+                </li>
+            );
+        })
+
     };
 
-        return (
-            <OrderStyled>
-                <div className="adminPage-body ">
-                    <p className="admin-title">
-                        <ReceiptIcon />
-                        Tất cả người dùng
-                    </p>
-                    <div className="admin">
-                        <div className="admin-right ">
-                            <p className="admin-right-text">Danh sách người dùng</p>
-                            <ul className="table admin-right-items">
-                                <li className="admin-right-header col-xl-12">
-                                    <span className="admin-right-header-item col-xl-1">STT</span>
-                                    <span className="admin-right-header-item col-xl-3">
-                                        Tên 
-                                    </span>
-                                    <span className="admin-right-header-item col-xl-2">
-                                        Email
-                                    </span>
-                                    <span className="admin-right-header-item col-xl-2">
-                                        Quyền truy cập
-                                    </span>
-                                    <span className="admin-right-header-item col-xl-2">
-                                        Chỉnh sửa
-                                    </span>
-                                    <span className="admin-right-header-item col-xl-2">
-                                        Xóa
-                                    </span>
-                                </li>
-                                {renderListUsers()}
+    return (
+        <OrderStyled>
 
-                            </ul>
-                        </div>
+            <div className="adminPage-body ">
+                <p className="admin-title">
+                    <ReceiptIcon />
+                    Tất cả người dùng
+                </p>
+                <div className="admin">
+                    <div className="admin-right ">
+                        <p className="admin-right-text">Danh sách người dùng</p>
+                        <ul className="table admin-right-items">
+                            <li className="admin-right-header col-xl-12">
+                                <span className="admin-right-header-item col-xl-1">STT</span>
+                                <span className="admin-right-header-item col-xl-3">
+                                    Tên
+                                </span>
+                                <span className="admin-right-header-item col-xl-2">
+                                    Email
+                                </span>
+                                <span className="admin-right-header-item col-xl-2">
+                                    Quyền truy cập
+                                </span>
+                                <span className="admin-right-header-item col-xl-2">
+                                    Chỉnh sửa
+                                </span>
+                                <span className="admin-right-header-item col-xl-2">
+                                    Xóa
+                                </span>
+                            </li>
+                            {renderListUsers()}
+
+
+                        </ul>
                     </div>
                 </div>
-            </OrderStyled>
-        );
+            </div>
+        </OrderStyled>
+    );
 }
 
 

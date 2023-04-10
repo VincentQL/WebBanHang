@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Logo from "./../images/logo/logo.png"
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 const HeaderStyled = styled.div`
@@ -45,9 +45,9 @@ const HeaderStyled = styled.div`
     nav .search-box .bx-search {
         position: absolute;
         height: 40px;
-        width: 40px;
+        width: 42px;
         background: #2697FF;
-        right: 5px;
+        right: 0px;
         top: 50%;
         transform: translateY(-50%);
         border-radius: 4px;
@@ -57,10 +57,41 @@ const HeaderStyled = styled.div`
         font-size: 22px;
         transition: all 0.4 ease;
     }
+    nav .search-box .bx-search:hover{
+        opacity: 0.8;
+        cursor: pointer
+    }
 `
 
 function Header({ isLogin, isAdmin }) {
     console.log('isLogin', isLogin)
+    const [active, setActive] = useState(false)
+    const [textSearch, setTextSearch] = useState('')
+    const [products, setProducts] = useState([])
+
+    async function fetchMyAPI() {
+        const config = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        }
+        const response = await fetch("http://localhost:4000/admin/get-product", config)
+        const data = await response.json()
+        let result = data.shirt.concat(data.clothes).concat(data.shoes)
+        setProducts(result);
+    }
+
+
+
+    useEffect(() => {
+        fetchMyAPI()
+    }, [])
+
+
+
+
     const renderProfile = () => {
         if (isLogin) {
             if (isAdmin) {
@@ -78,43 +109,62 @@ function Header({ isLogin, isAdmin }) {
 
         }
     }
+
+    function searchProduct(keyword) {
+        return products.filter((product) => {
+          return (
+            product.deleted === false &&
+            (product.name.toLowerCase().includes(keyword) || product._id.toLowerCase().includes(keyword))
+          );
+        });
+      }
+
     return (
         <HeaderStyled>
             <div className="header">
                 <div className="header__logo d-flex col-xl-12">
                     <div href="#" className="div-img col-xl-2">
-                        <Link to="/" >  <Link to="/" ><img src={Logo} alt="" /></Link> </Link>
-                        <Link to="/" className="trangchu">Trang chủ</Link>
+                        <NavLink to="/" >  <NavLink to="/" ><img src={Logo} alt="" /></NavLink> </NavLink>
+                        <NavLink to="/" className="trangchu">Trang chủ</NavLink>
                     </div>
-                    <div className="col-xl-8 my-auto">
+                    <div className="col-xl-6 my-auto">
                         <div className="header__navbar justify-content-between ">
                             <Link to="/" className="trangchu">Trang chủ</Link>
                             <ul className="navbar__items d-flex">
 
-                                <li className="navbar__item"> <Link to="/shirt" className="">Áo thời trang</Link>
+                                <li className="navbar__item"> <NavLink to="/shirt" >Áo thời trang</NavLink>
 
                                 </li>
-                                <li className="navbar__item"> <Link to="/clothes" className="">Quần thời trang</Link>
+                                <li className="navbar__item"> <NavLink to="/clothes">Quần thời trang</NavLink>
 
                                 </li>
-                                <li className="navbar__item"> <Link to="/shoes" className="">Giày thời trang</Link>
+                                <li className="navbar__item"> <NavLink to="/shoes">Giày thời trang</NavLink>
 
                                 </li>
                             </ul>
-                            <nav>
 
-                                <div className="search-box">
-                                    <input type="text" placeholder="Search..." />
-                                    <i className='bx bx-search'></i>
-                                </div>
 
-                            </nav>
 
                         </div>
                     </div>
-                    <div className="col-xl-2 user">
-                        {renderProfile()}
-                        <Link to="/cart" className=""><i className="fas fa-shopping-cart icon-cart"></i></Link>
+                    <div className="col-xl-4 user">
+                        <nav className='col-xl-6 m-auto d-flex justify-content-end'>
+                            <div className={active ? "search-box open" : "search-box"} >
+                                <input type="text" value={textSearch} onChange={(e) => {
+                                    setTextSearch(e.target.value)
+                                    let arr = searchProduct(e.target.value)
+                                    console.log('arr',arr)
+                                }} placeholder="Search..." />
+                                <i className='bx bx-search' onClick={() => {
+                                    active === false && setTextSearch('')
+                                    setActive(!active)
+                                }}></i>
+                            </div>
+                        </nav>
+                        <div className="col-xl-6 d-flex">
+                            {renderProfile()}
+                            <Link to="/cart" className=""><i className="fas fa-shopping-cart icon-cart"></i></Link>
+                        </div>
                     </div>
                 </div>
             </div>

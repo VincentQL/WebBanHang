@@ -1,9 +1,9 @@
 import PersonAdd from '@mui/icons-material/PersonAdd';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from 'react-toastify';
 import styled from "styled-components";
 
-const AddUserStyled = styled.div`
+const EditUserStyled = styled.div`
    
    .admin-title {
   width: 100%;
@@ -159,7 +159,7 @@ const AddUserStyled = styled.div`
 
 
 
-function AddUser() {
+function EditUser() {
     const [name, setName] = useState()
     const [mail, setMail] = useState()
     const [password, setPassword] = useState()
@@ -169,36 +169,71 @@ function AddUser() {
     const [birthday, setBirthday] = useState()
     const [sex, setSex] = useState()
     const [role, setRole] = useState()
-    
+    const [idUser, setIdUser] = useState()
+
     const validateEmail = (email) => {
         return email.match(
             /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         );
     };
 
-    const registered = async () => {
+    async function fetchMyAPI() {
+        var url = window.location.pathname;
+        var id = url.substring(url.lastIndexOf('/') + 1);
+        setIdUser(id)
+        const config = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+        }
+        const response = await fetch("http://localhost:4000/admin/get-user", config)
+        const data = await response.json()
+        data.users.map((item) => {
+            if (item._id == id) {
+                console.log('item', item)
+                setName(item.name)
+                setMail(item.account)
+                setPassword(item.password)
+                setRePassword(item.password)
+                setAddress(item.address)
+                setNumberPhone(item.numberPhone)
+                setBirthday(item.birthday)
+                setSex(item.sex)
+                setRole(item.role)
+
+            }
+        })
+    }
+    useEffect(() => {
+        fetchMyAPI()
+
+    }, [])
+
+    const updateUser = async () => {
         console.log('click', name, mail, password, rePassword, address, numberPhone, birthday, sex)
         if (name && mail && password && rePassword && address && numberPhone && birthday && sex) {
             if (validateEmail(mail)) {
                 if (password.length >= 6) {
                     if (password == rePassword) {
                         const config = {
-                            method: 'POST',
+                            method: 'PUT',
                             headers: {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                                name, account: mail, password, numberPhone, address, birthday, sex, role: "Client"
+                                name, account: mail, password, numberPhone, address, birthday, sex, role
                             })
                         }
-                        const response = await fetch("http://localhost:4000/admin/create-user", config)
+                        const response = await fetch(`http://localhost:4000/admin/${idUser}/edit-user`, config)
                         const data = await response.json()
-                        if (data.errCode === 2) {
-                            toast.warn("Tài khoản đã tồn tại, vui lòng nhập mail khác!")
+                        if (data.success) {
+                            toast.success("Chỉnh sửa tài khoản thành công!")
                         }
-                        else if (data.success) {
-                            toast.success("Thêm tài khoản thành công!")
-                            
+                        else {
+                            toast.warn("Chỉnh sửa tài khoản thất bại, vui lòng thử lại")
+
                         }
                     }
                 }
@@ -217,11 +252,11 @@ function AddUser() {
         }
     }
     return (
-        <AddUserStyled>
-            
-            <div className="addUser col-xl-12">
-                <div className="login-left col-xl-8 ">
-                    <p className="admin-title"> <PersonAdd className="icon" />Thêm người dùng</p>
+        <EditUserStyled>
+          
+            <div className="EditUser col-xl-12">
+                <div className="login-left col-xl-8 m-auto">
+                    <p className="admin-title"> <PersonAdd className="icon" />Chỉnh sửa thông tin người dùng</p>
                     <form id="create-course-form">
                         <div className="form-controls">
                             <input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="Họ và tên" />
@@ -276,15 +311,13 @@ function AddUser() {
                             </select>
                         </div>
 
-
-
-                        <p className="submit" onClick={registered}>Đăng ký</p>
+                        <p className="submit" onClick={updateUser}>Chỉnh sửa người dùng</p>
                     </form>
                 </div>
             </div>
-        </AddUserStyled>
+        </EditUserStyled>
     );
 }
 
 
-export default AddUser;
+export default EditUser;

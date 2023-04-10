@@ -849,7 +849,7 @@ ul .level1 li a:hover {
 }
 
 .active {
-    color: var(--hover-color) ;
+    color: var(--hover-color);
 }
 
 /* sản phẩm phổ biến */
@@ -968,9 +968,8 @@ ul .level1 li a:hover {
     line-height: 1.2rem;
 }
 
-.product__price {
-    display: flex;
-    justify-content: space-between;
+.card-body .active {
+    text-align: end;
 }
 
 .product__price p {
@@ -1462,7 +1461,7 @@ i.home-product-item__like-icon-fill {
 }
 
 .search-box.open {
-    width: 420px;
+    width: 100%;
 }
 
 .search-input {

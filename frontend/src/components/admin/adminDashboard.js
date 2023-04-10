@@ -44,16 +44,7 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/order"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
+                       
                     >
                         <ShoppingCartIcon className="icon" />
                         Danh sách đơn hàng
@@ -62,16 +53,6 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/revenue"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
                     >
                         <CalculateIcon className="icon" />
                         Thống kê doanh thu
@@ -79,16 +60,6 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/add-product"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
                     >
                         <AddIcon className="icon" />
                         Thêm sản phẩm
@@ -96,33 +67,13 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/view-products"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
                     >
                         <CoffeeIcon className="icon" />
                         Xem tất cả sản phẩm
                     </NavLink>
                     <NavLink
                         className="nav-link"
-                        to="admin/add"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
+                        to="admin/history"
                     >
                         <ReceiptIcon className="icon" />
                         Lịch sử đơn hàng
@@ -133,16 +84,6 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/add-user"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
                     >
 
                         <PersonAddIcon className="icon" />
@@ -176,16 +117,6 @@ function AdminDashboard({ statusLogin, setStatusLogin }) {
                     <NavLink
                         className="nav-link"
                         to="admin/sale"
-                        activeStyle={{
-                            opacity: "1",
-                            fontWeight: "bold",
-                            color: "black",
-                            lineHeight: "60px",
-                            borderTopLeftRadius: "25px",
-                            borderBottomLeftRadius: "25px",
-                            width: "100%",
-                            background: "white"
-                        }}
                     >
                         {" "}
                         <GitHubIcon className="icon" />

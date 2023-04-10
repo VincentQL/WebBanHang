@@ -28,15 +28,17 @@ const Clothes = new Schema({
     img: {
         type: String
     },
-    currentQuantity: {
-        type: Number
-    },
     currentSold: {
         type: Number
     },
-
-    size: {
-        type: String
+    sizeS: {
+        type: Number
+    },
+    sizeL: {
+        type: Number
+    },
+    sizeM: {
+        type: Number
     },
     color: {
         type: String

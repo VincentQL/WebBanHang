@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "./login.css";
 
 
@@ -56,20 +56,7 @@ function Login({ statusLogin, setStatusLogin, setIsLogin }) {
     }
     return (
         <div className="containers">
-            < ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-            {/* Same as */}
-            < ToastContainer />
+           
             <h1>Đăng nhập</h1>
             <form>
                 <div className="form-controls">

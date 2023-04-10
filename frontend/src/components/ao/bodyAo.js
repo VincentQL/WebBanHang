@@ -2,14 +2,14 @@ import ProductNew from '../productNew';
 import ProductSale from '../productSale';
 import ProductYouLike from '../productYouLike';
 
-function BodyAo() {
+function BodyAo({setCart}) {
 
     return (
         <>
             <div className="product">
                 <div className="container">
-                    <ProductNew />
-                    <ProductSale />
+                    <ProductNew setCart={setCart}/>
+                    <ProductSale setCart={setCart}/>
 
                     <section className="awe-section-9">
                         <div className="section_policy clearfix">
@@ -71,7 +71,7 @@ function BodyAo() {
                             </div>
                         </div>
                     </section>
-                    <ProductYouLike />
+                    <ProductYouLike setCart = {setCart}/>
                 </div>
             </div>
         </>

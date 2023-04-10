@@ -46,6 +46,7 @@ const AddProductStyled = styled.div`
       display: flex;
       justify-content: end;
       margin-right:24px;
+      margin-bottom: 18px;
       .btn-submit{
         border: 1px solid;
         border-radius:250px;
@@ -127,29 +128,12 @@ function AddProduct() {
     const [name, setName] = useState()
     const [type, setType] = useState()
     const [price, setPrice] = useState()
-    const [currentQuantity, setCurrentQuantity] = useState()
-    const [size, setSize] = useState()
+    const [sizeS, setSizeS] = useState()
+    const [sizeL, setSizeL] = useState()
+    const [sizeM, setsizeM] = useState()
     const [color, setColor] = useState()
 
-    const handleChange = async (selectedOption) => {
-        // this.setState({ selectedOption });
-    };
-
-    const handleEditorChange = ({ html, text }) => {
-        // this.setState({
-        //   contentMarkdown: text,
-        //   contentHTML: html,
-        // });
-    };
-
-    const onChangeFormInput = (e) => {
-        // let target = e.target;
-        // let name = target.name;
-        // let value = target.value;
-        // this.setState({
-        //   [name]: value,
-        // });
-    };
+   
     async function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -174,8 +158,9 @@ function AddProduct() {
 
     const submitForm = async () => {
         let today = new Date().toISOString().slice(0, 10)
-
-        if (name && type && price && currentQuantity && size && color && avatar) {
+        let currentQuantity = sizeS + sizeL + sizeM
+        console.log(name, type, price, currentQuantity, sizeS, sizeL, sizeM, color, avatar)
+        if (name && type && price && currentQuantity && sizeS && sizeL && sizeM && color && avatar) {
             const config = {
                 method: 'POST',
                 headers: {
@@ -190,7 +175,9 @@ function AddProduct() {
                     img: avatar,
                     currentQuantity: currentQuantity,
                     currentSold: 0,
-                    size: size,
+                    sizeS: sizeS,
+                    sizeL: sizeL,
+                    sizeM: sizeM,
                     color: color,
                     date: today,
                     updateDate: today
@@ -198,53 +185,22 @@ function AddProduct() {
             }
             const response = await fetch("http://localhost:4000/admin/create-product", config)
             const data = await response.json()
-            console.log('data',data)
+            if (data) {
+                toast.success("Bạn đã thêm sản phẩm thành công")
+            }
+
+
         }
         else {
             toast.warn("Vui lòng nhập đầy đủ thông tin!")
         }
-        // let value = await services.userServices.addProduct({
-        //   name: this.state.name,
-        //   descriptionHTML: this.state.contentHTML,
-        //   descriptionMarkdown: this.state.contentMarkdown,
-        //   img: this.state.avatar,
-        //   roleID: this.state.roleID,
-        //   price: this.state.price,
-        // });
-        // if (value.data && value.data.errCode === 0) {
-        //   this.setState({
-        //     isOpen: false,
-        //     contentMarkdown: "",
-        //     contentHTML: "",
-        //     reviewImg: null,
-        //     roleID: "",
-        //     name: "",
-        //     price: "",
-        //     avatar: "",
-        //   });
-        //   toast.success("Thêm sản phẩm thành công!!!");
-        // } else {
-        //   toast.warn("Thêm sản phẩm thành công!!!");
-        // }
+
     };
     return (
         <AddProductStyled>
 
 
-            < ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-            />
-            {/* Same as */}
-            < ToastContainer />
+            
             <div className="col-xl-12">
                 <p className="admin-title mt-4">Thêm sản phẩm</p>
                 <div className="admin">
@@ -259,7 +215,7 @@ function AddProduct() {
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         name="name"
-                                        //   value={this.state.name}
+                                        value={name}
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="Tên sản phẩm"
                                         required
@@ -272,43 +228,57 @@ function AddProduct() {
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         name="price"
-                                        //   value={this.state.price}
+                                        value={price}
                                         onChange={(e) => setPrice(e.target.value)}
-
                                         placeholder="Giá"
                                         required
                                     />
                                 </div>
                             </div>
                             <div className="d-flex">
-                                <div className="form-group col-xl-6">
-                                    <label htmlFor="exampleInputPassword1">Số lượng sản phẩm:</label>
+                                <div className="form-group col-xl-4">
+                                    <label htmlFor="exampleInputPassword1">Số lượng size S</label>
                                     <input
                                         type="number"
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         name="name"
-                                        //   value={this.state.name}
-                                        onChange={(e) => setCurrentQuantity(e.target.value)}
+                                        value={sizeS}
+                                        onChange={(e) => setSizeS(e.target.value)}
                                         placeholder="Nhập số lượng sản phẩm"
                                         required
                                     />
                                 </div>
-                                <div className="form-group col-xl-6">
-                                    <label htmlFor="exampleInputPassword1">Kích cỡ:</label>
-                                    <select
-                                        class="form-control"
-                                        id="exampleFormControlSelect1"
-                                        //   value={this.state.roleID}
-                                        onChange={(e) => setSize(e.target.value)}
-                                    >
-                                        <option >---Kích cỡ sản phẩm---</option>
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                    </select>
+                                <div className="form-group col-xl-4">
+                                    <label htmlFor="exampleInputPassword1">Số lượng size M:</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="exampleInputPassword1"
+                                        name="name"
+                                        value={sizeM}
+                                        onChange={(e) => setsizeM(e.target.value)}
+                                        placeholder="Nhập số lượng sản phẩm"
+                                        required
+                                    />
                                 </div>
+
+                                <div className="form-group col-xl-4">
+                                    <label htmlFor="exampleInputPassword1">Số lượng size L:</label>
+                                    <input
+                                        type="number"
+                                        className="form-control"
+                                        id="exampleInputPassword1"
+                                        name="name"
+                                        value={sizeL}
+                                        onChange={(e) => setSizeL(e.target.value)}
+                                        placeholder="Nhập số lượng sản phẩm"
+                                        required
+                                    />
+                                </div>
+
+
+
                             </div>
 
                             <div className="d-flex">
@@ -319,9 +289,8 @@ function AddProduct() {
                                         className="form-control"
                                         id="exampleInputPassword1"
                                         name="name"
-                                        //   value={this.state.name}
+                                        value={color}
                                         onChange={(e) => setColor(e.target.value)}
-
                                         placeholder="Màu sản phẩm"
                                         required
                                     />
@@ -331,6 +300,7 @@ function AddProduct() {
                                     <select
                                         class="form-control"
                                         id="exampleFormControlSelect1"
+                                        value={type}
                                         onChange={(e) => setType(e.target.value)}
                                     >
                                         <option >---Chọn danh mục---</option>
@@ -369,8 +339,6 @@ function AddProduct() {
                             <MdEditor
                                 style={{ height: "500px" }}
                                 renderHTML={(text) => mdParser.render(text)}
-                            //   onChange={this.handleEditorChange}
-                            //   value={this.state.contentMarkdown}
                             />
                         </form>
                         <div className={"div-btn"}>

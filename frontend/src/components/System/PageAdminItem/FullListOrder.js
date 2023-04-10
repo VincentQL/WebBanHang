@@ -112,7 +112,7 @@ const OrderStyled = styled.div`
 function FullListOrder() {
    const renderListProduct = () => {
     return (
-        <li className="admin-right-item col-xl-12" key={`item`}>
+        <li className="admin-right-item col-xl-12" key={item._id}>
             <span className="admin-right-header-item col-xl-1">{1}</span>
             <span className="admin-right-header-item col-xl-3">
                 Name
