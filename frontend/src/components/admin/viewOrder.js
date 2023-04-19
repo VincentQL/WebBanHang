@@ -153,7 +153,7 @@ function ViewOrder() {
 
     const renderListProduct = (arr) => {
         return arr && arr.length > 0 && arr.map((item) => {
-            let user = JSON.parse(item.user)
+            let user = item.user && JSON.parse(item.user)
 
             if (
                 item.status < 2 && user.role === 'null' || item.status < 1

@@ -192,9 +192,10 @@ class AdminController {
             });
         } else {
             console.log("thanh cong", req.body)
-
+            let hashPassword = await bcrypt.hashSync(req.body.password, salt);
+            req.body.password = hashPassword;
             User.updateOne({ _id: req.params.id }, req.body)
-                .then(async() => {
+                .then(async () => {
                     const user = await User.findOne({ account: req.body.account })
                     return res.json({ errCode: 0, success: true, message: "Update user thành công", user: user });
                 })
