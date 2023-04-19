@@ -2,13 +2,11 @@
     background-color: var(--white-color);
     /* height: var(--header-height); */
     border-bottom: 1px solid #eee;
-    /* position:fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999; */
+   
     box-shadow: 0 0 10px rgb(0 0 0 / 10%);
 }
+
+
 
 .top-link {
     border-bottom: 1px solid #333;
@@ -1441,6 +1439,8 @@ i.home-product-item__like-icon-fill {
 
 .user {
     height: 60px;
+    z-index: 10;
+
 }
 
 .user i {
@@ -1454,7 +1454,7 @@ i.home-product-item__like-icon-fill {
     height: 42px;
     background-color: #242628;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.5s ease;
     border-radius: 15px;
     margin: auto 0;
@@ -1508,4 +1508,47 @@ i.home-product-item__like-icon-fill {
 
 .footer {
     font-weight: bold;
+}
+
+.items-search {
+    width: 100%;
+    /* overflow: hidden; */
+    margin: 0;
+    background-color: #ece6da;
+    border-radius: 6px;
+    padding: 0;
+
+}
+
+.item-search {
+    list-style: none;
+    padding: 0;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.item-search:hover {
+    opacity: 0.8;
+    background-color: #ccc;
+}
+
+.detail-item {
+    margin: auto;
+}
+
+.detail-item .detail-item__name {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.detail-item span {
+    font-size: 12px;
+}
+
+.item-search img {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+    margin: auto;
 }

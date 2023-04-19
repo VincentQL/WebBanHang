@@ -148,7 +148,7 @@ class FullListProduct extends Component {
                   <div className="form-group col-xl-6">
                     <label htmlFor="exampleInputPassword1">Loại:</label>
                     <select
-                      class="form-control"
+                      className="form-control"
                       id="exampleFormControlSelect1"
                       value={this.state.roleID}
                       onChange={this.changeSelect}

@@ -83,23 +83,23 @@ class UserManage extends Component {
     if (users) {
       result = this.state.listUser.map((user, index) => {
         return (
-          <div class="table-row">
-            <div class="table-data">{user.id}</div>
-            <div class="table-data">{user.email}</div>
-            <div class="table-data">{user.lastName}</div>
-            <div class="table-data">{user.address}</div>
-            <div class="table-data">{user.roleID}</div>
-            <div class="table-data">
+          <div className="table-row">
+            <div className="table-data">{user.id}</div>
+            <div className="table-data">{user.email}</div>
+            <div className="table-data">{user.lastName}</div>
+            <div className="table-data">{user.address}</div>
+            <div className="table-data">{user.roleID}</div>
+            <div className="table-data">
               <button
                 type="button"
-                class="btn btn-warning"
+                className="btn btn-warning"
                 onClick={() => this.isOpenModalEdit(user)}
               >
                 Sửa
               </button>
               <button
                 type="button"
-                class="btn btn-danger"
+                className="btn btn-danger"
                 onClick={() => this.deleteUser(user.id)}
               >
                 Xóa
@@ -120,7 +120,7 @@ class UserManage extends Component {
             className="btn btn-success btn-create"
             onClick={this.isOpenFormModel}
           >
-            <i class="fas fa-plus icon-plus"></i>Create User
+            <i className="fas fa-plus icon-plus"></i>Create User
           </button>
         </div>
         <ModalUser

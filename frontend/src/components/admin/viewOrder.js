@@ -153,11 +153,11 @@ function ViewOrder() {
 
     const renderListProduct = (arr) => {
         return arr && arr.length > 0 && arr.map((item) => {
+            let user = JSON.parse(item.user)
+
             if (
-                item.status === 0
+                item.status < 2 && user.role === 'null' || item.status < 1
             ) {
-                console.log('arr', arr, item)
-                let user = JSON.parse(item.user)
                 let product = JSON.parse(item.arrProduct)
                 return (
                     <li className="admin-right-item col-xl-12" key={item._id}>
@@ -176,7 +176,7 @@ function ViewOrder() {
 
                         </div>
                         <span className="admin-right-header-item col-xl-1"> {item.price}</span>
-                        <span className="admin-right-header-item col-xl-1"> Chưa xác nhận </span>
+                        <span className="admin-right-header-item col-xl-1"> {item.status === 0 ? 'Chưa xác nhận' : 'Đang vận chuyển'} </span>
                         <span className="admin-right-header-item col-xl-2">
                             {item.time}
                         </span>

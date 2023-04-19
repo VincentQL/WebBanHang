@@ -1,7 +1,5 @@
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const CalculateStyled = styled.div`
@@ -162,7 +160,7 @@ function CalculateMoney() {
             return (<>Chưa xác nhận</>)
         }
         if (item.status === 1) {
-            return (<>Đã xác nhận</>)
+            return (<>Đang vận chuyển</>)
         }
         else {
             return (<>Đã nhận hàng</>)
@@ -175,7 +173,7 @@ function CalculateMoney() {
         return bills.length > 0 && bills.map((items, i) => {
             let total = 0
             items.map(item=>{
-                total += +item.price
+                total += item.status === 2 ? +item.price : 0
             })
             return (
                 <ul className="table admin-right-items">

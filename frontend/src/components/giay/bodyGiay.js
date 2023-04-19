@@ -2,15 +2,15 @@ import ProductNew from '../productNew';
 import ProductSale from '../productSale';
 import ProductYouLike from '../productYouLike';
 
-function BodyGiay({ setCart }) {
+function BodyGiay({ setCart, cart }) {
 
     return (
         <>
             <div className="product">
                 <div className="container">
 
-                    <ProductNew setCart={setCart} />
-                    <ProductSale setCart={setCart} />
+                    <ProductNew setCart={setCart} cart={cart} />
+                    <ProductSale setCart={setCart} cart={cart} />
 
                     <section className="awe-section-9">
                         <div className="section_policy clearfix">
@@ -72,7 +72,7 @@ function BodyGiay({ setCart }) {
                             </div>
                         </div>
                     </section>
-                    <ProductYouLike setCart = {setCart}/>
+                    <ProductYouLike setCart={setCart} />
                 </div>
             </div>
         </>

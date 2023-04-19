@@ -35,7 +35,7 @@ class HomeBanner extends Component {
         var settings = {
             dots: true,
             infinite: true,
-            speed: 500,
+            speed: 1000,
             slidesToShow: 1,
             slidesToScroll: 1,
             autoplay: true,
@@ -55,10 +55,10 @@ class HomeBanner extends Component {
                         <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
                     </div>
                     <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
+                        <img src="https://i.pinimg.com/originals/d0/b6/5c/d0b65c5c53657f897af6862c44d8a5e2.jpg" alt="bannerTree" className="banner" />
                     </div>
                     <div>
-                        <img src="https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/if_w_gt_1920,w_1920/viVN/Images/choose-to-move-all-sports-hp-masthead-fallback-d_tcm337-799677.jpg" alt="bannerTree" className="banner" />
+                        <img src="https://hanaichi.vn/blog/wp-content/uploads/2019/11/adidas-originals-shoes-banner.jpg" alt="bannerTree" className="banner" />
                     </div>
                 </Slider>
             </StyledHomeBanner>

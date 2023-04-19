@@ -188,7 +188,7 @@ function AddUser() {
                                 "Content-Type": "application/json",
                             },
                             body: JSON.stringify({
-                                name, account: mail, password, numberPhone, address, birthday, sex, role: "Client"
+                                name, account: mail, password, numberPhone, address, birthday, sex, role
                             })
                         }
                         const response = await fetch("http://localhost:4000/admin/create-user", config)

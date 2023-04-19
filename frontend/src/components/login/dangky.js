@@ -22,7 +22,8 @@ function DangKy() {
         if (name && mail && password && rePassword && address && numberPhone && birthday && sex) {
             if (validateEmail(mail)) {
                 if (password.length >= 6) {
-                    if (password == rePassword) {
+                    console.log('co chay vao dayyy',password === rePassword)
+                    if (password === rePassword) {
                         const config = {
                             method: 'POST',
                             headers: {
@@ -34,7 +35,8 @@ function DangKy() {
                         }
                         const response = await fetch("http://localhost:4000/admin/create-user", config)
                         console.log('response', response.data)
-                        const data = response.json()
+                        const data = await response.json()
+                        console.log('data',data)
                         if (data.success) {
                             toast.success("Bạn đã đăng kí thành công!!!")
                         }
@@ -42,6 +44,9 @@ function DangKy() {
                             toast.warn("Email đã được đăng kí vui lòng chọn mail khác!!!")
 
                         }
+                    }
+                    else{
+                        toast.warn("Vui lòng nhập lại mật khẩu!")
                     }
                 }
                 else {

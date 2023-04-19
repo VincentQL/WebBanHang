@@ -1453,7 +1453,7 @@ i.home-product-item__like-icon-fill {
     height: 42px;
     background-color: #242628;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: all 0.5s ease;
     border-radius: 15px;
     margin: auto 0;
@@ -1507,3 +1507,5 @@ i.home-product-item__like-icon-fill {
 .footer{
     font-weight: bold;
 }
+
+

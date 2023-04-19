@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import styled from 'styled-components';
 import './App.css';
 import NotFound from './components/NotFound';
 import AddProduct from './components/admin/addProduct';
+import AddSale from './components/admin/addSale';
 import AddUser from './components/admin/addUser';
 import AdminDashboard from './components/admin/adminDashboard';
+import CalculateMoney from './components/admin/calculateMoney';
+import EditProduct from './components/admin/editProduct';
+import EditUser from './components/admin/editUser';
+import HistoryOrder from './components/admin/historyOrder';
 import ViewOrder from './components/admin/viewOrder';
 import ViewProduct from './components/admin/viewProduct';
 import ViewUsers from './components/admin/viewUsers';
@@ -20,12 +26,6 @@ import DangKy from './components/login/dangky';
 import DangNhap from './components/login/dangnhap';
 import BodyQuan from './components/quan/bodyQuan';
 import UserAccount from './components/userAccount';
-import EditUser from './components/admin/editUser';
-import EditProduct from './components/admin/editProduct';
-import { ToastContainer, toast } from 'react-toastify';
-import CalculateMoney from './components/admin/calculateMoney';
-import HistoryOrder from './components/admin/historyOrder';
-import AddSale from './components/admin/addSale';
 
 
 const AdminPageStyled = styled.div`
@@ -130,6 +130,36 @@ function App() {
     const [productEdit, setProductEdit] = useState()
     const [cart, setCart] = useState([])
     const [productInCart, setProductInCart] = useState([])
+    const [fixedHeader, setFixedHeader] = useState(false)
+
+    const [scrollTop, setScrollTop] = useState(0);
+    const handleScroll = event => {
+        console.log('co chay cai nay')
+        setScrollTop(event.currentTarget.scrollTop);
+    };
+
+    useEffect(() => {
+        const handleScroll = event => {
+            setScrollTop(window.scrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+
+    useEffect(() => {
+        if (scrollTop > 100) {
+            setFixedHeader(true)
+        }
+        else {
+            setFixedHeader(false)
+
+        }
+    }, [scrollTop])
 
     useEffect(() => {
         async function fetchData() {
@@ -139,6 +169,7 @@ function App() {
         }
         fetchData();
     }, [statusLogin]);
+
     useEffect(() => {
         let result = [];
         cart.forEach(function (a) {
@@ -157,10 +188,18 @@ function App() {
             }
         }, Object.create(null));
         setProductInCart(result)
-        console.log(result);
 
     }, [cart]);
+
+    const onScroll = () => {
+        const scrollTop = this.myRef.current;
+        let scrollTopCurrent = scrollTop.ref.current.view.scrollTop;
+        console.log('scrollTopCurrent', scrollTopCurrent)
+    };
+
     const renderMainPage = () => {
+        // User login : isLogin = true, isAdmin = false. 
+        // Admin login: isLogin = true, isAdmin = true
         if (isLogin && isAdmin) {
             return <AdminPageStyled>
                 <Router>
@@ -183,6 +222,7 @@ function App() {
 
                             </Routes>
                         </div>
+
                     </div>
                     <Footer />
                 </Router></AdminPageStyled >
@@ -190,20 +230,23 @@ function App() {
         else {
             return (<Router>
                 <div >
-                    <Header isLogin={isLogin} isAdmin={isAdmin} />
+                    <Header isLogin={isLogin} isAdmin={isAdmin} fixedHeader={fixedHeader} />
                     <Routes>
-                        <Route path='/' element={<BodyHomePage setCart={setCart} />} />
-                        <Route path='/shirt' element={<BodyAo setCart={setCart} />} />
-                        <Route path='/clothes' element={<BodyQuan setCart={setCart} />} />
-                        <Route path='/shoes' element={<BodyGiay setCart={setCart} />} />
+                        <Route path='/' element={<BodyHomePage setCart={setCart} cart={cart} />} />
+                        <Route path='/shirt' element={<BodyAo setCart={setCart} cart={cart} />} />
+                        <Route path='/clothes' element={<BodyQuan setCart={setCart} cart={cart} />} />
+                        <Route path='/shoes' element={<BodyGiay setCart={setCart} cart={cart} />} />
                         <Route path='/login' element={<DangNhap statusLogin={statusLogin} setStatusLogin={setStatusLogin} setIsLogin={setIsLogin} />} />
                         <Route path='/register' element={<DangKy />} />
-                        <Route path='/cart' element={<GioHang listproducts={cart} setCart={setCart} sortCart={productInCart} userLoggedIn={isLogin} />} />
-                        <Route path='/detail' element={<DetailProduct />} />
+                        <Route path='/cart' element={<GioHang listproducts={cart} setCart={setCart} cart={cart} sortCart={productInCart} userLoggedIn={isLogin} />} />
+                        <Route path='/detail' element={<DetailProduct setCart={setCart} cart={cart} />} />
                         <Route path="/profile" element={isLogin ? <UserAccount statusLogin={statusLogin} setStatusLogin={setStatusLogin} /> : <NotFound />} />
                         <Route path='*' exact={true} element={<NotFound />} />
 
                     </Routes>
+                    <div id="go-to-top">
+                        <a className="btn-gototop"><i className="fas fa-arrow-up"></i></a>
+                    </div>
                     <Footer />
                 </div>
 
@@ -212,10 +255,11 @@ function App() {
         }
     }
     return (
-        <>
+        <div onScroll={onScroll}>
+
             < ToastContainer
                 position="top-right"
-                autoClose={2000}
+                autoClose={1000}
                 hideProgressBar={false}
                 newestOnTop={false}
                 closeOnClick
@@ -229,7 +273,7 @@ function App() {
             < ToastContainer />
             <>{renderMainPage()}</>
 
-        </>
+        </div>
     )
 
 }

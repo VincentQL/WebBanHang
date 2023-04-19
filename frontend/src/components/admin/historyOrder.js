@@ -160,7 +160,7 @@ function HistoryOrder() {
             return (<>Chưa xác nhận</>)
         }
         if (item.status === 1) {
-            return (<>Đã xác nhận</>)
+            return (<>Đang vận chuyển</>)
         }
         else {
             return (<>Đã nhận hàng</>)

@@ -1,12 +1,11 @@
-import Sanphamphobien from './sanphamphobien';
-import HomeBanner from './banner';
-import "./../index.css"
 import ProductNew from '../productNew';
 import ProductSale from '../productSale';
-import ProductYouLike from "../productYouLike"
-import { useState, useEffect } from 'react';
+import ProductYouLike from "../productYouLike";
+import "./../index.css";
+import HomeBanner from './banner';
+import Sanphamphobien from './sanphamphobien';
 
-function BodyHomePage({ setCart }) {
+function BodyHomePage({ setCart,cart }) {
 
 
 
@@ -17,8 +16,8 @@ function BodyHomePage({ setCart }) {
                 <div className="product">
                     <div className="container">
                         <Sanphamphobien />
-                        <ProductNew setCart={setCart} />
-                        <ProductSale setCart={setCart} />
+                        <ProductNew setCart={setCart} cart = {cart}/>
+                        <ProductSale setCart={setCart} cart = {cart} />
                         <section className="awe-section-9">
                             <div className="section_policy clearfix">
                                 <div className="col-12">

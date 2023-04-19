@@ -1,8 +1,5 @@
-import MarkdownIt from "markdown-it";
-import queryString from 'query-string';
 import React, { useEffect, useState } from "react";
 import "react-image-lightbox/style.css";
-import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 import { useLocation } from 'react-router';
 import { toast } from "react-toastify";

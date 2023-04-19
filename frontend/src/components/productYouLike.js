@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 
 import { toast } from 'react-toastify';
 import "./sanpham.css";
+import { Link } from 'react-router-dom';
 
-function ProductYouLike({ setCart }) {
+function ProductYouLike({ setCart, cart }) {
     const [localPath, setLocalPath] = useState()
     const [product, setProduct] = useState([])
 
@@ -13,24 +14,65 @@ function ProductYouLike({ setCart }) {
     const [size, setSize] = useState("S")
 
     const AddToCart = (item) => {
+        const amount = currentID && document.getElementsByClassName(currentID)[0].value ? document.getElementsByClassName(currentID)[0].value : "1"
+
         // eslint-disable-next-line no-unused-expressions
         if (!currentID || item._id != currentID) {
             toast.warn("Vui lòng chọn sản phẩm ")
         }
+        else if (amount < 0) {
+            toast.warn("Vui lòng nhập số lượng sản phẩm!")
+        }
         else {
-            const amount = currentID && document.getElementsByClassName(currentID)[0].value ? document.getElementsByClassName(currentID)[0].value : "1"
-            if (size === 'S') {
-                Number(amount) < item.sizeS ? setCart(cart => [...cart, { item, amount, size }]) : toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
 
+            let index = -1
+            let tempCart = cart
+            console.log('tempCart', tempCart)
+            for (let i = 0; i < tempCart.length; i++) {
+                if (tempCart[i].item._id === item._id && tempCart[i].size === size) {
+                    let newValue = Number(tempCart[i].amount) + Number(amount)
+                    tempCart[i].amount = newValue
+                    index = i
+                }
             }
-            else if (size === 'M') {
-                Number(amount) < item.sizeM ? setCart(cart => [...cart, { item, amount, size }]) : toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
+            console.log("tempCart", tempCart)
+            if (index === -1) {
+                if (size === 'S') {
+                    if (Number(amount) <= item.sizeS) {
+                        setCart(cart => [...cart, { item, amount, size }])
+                        toast.success("Bạn đã thêm sản phẩm vào giỏ thành công!")
+                    }
+                    else {
+                        toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
+                    }
+
+                }
+                else if (size === 'M') {
+                    if (Number(amount) <= item.sizeM) {
+                        setCart(cart => [...cart, { item, amount, size }])
+                        toast.success("Bạn đã thêm sản phẩm vào giỏ thành công!")
+                    }
+                    else {
+                        toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
+                    }
+                }
+                else {
+                    if (Number(amount) <= item.sizeL) {
+                        setCart(cart => [...cart, { item, amount, size }])
+                        toast.success("Bạn đã thêm sản phẩm vào giỏ thành công!")
+                    }
+                    else {
+                        toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
+                    }
+
+                }
 
             }
             else {
-                Number(amount) < item.sizeL ? setCart(cart => [...cart, { item, amount, size }]) : toast.warn("Vượt quá số lượng sản phẩm hiện có, vui lòng thử lại")
+                setCart(tempCart)
+                toast.success("Bạn đã thêm sản phẩm vào giỏ thành công!")
+
             }
-            toast.success("Bạn đã thêm sản phẩm vào giỏ thành công!")
 
         }
     }
@@ -80,25 +122,25 @@ function ProductYouLike({ setCart }) {
     const renderProductYouLike = () => {
         console.log('localPath', localPath)
         if (localPath === '/shirt') {
-            return product.shirt && product.shirt.length > 0 && product.shirt.length > 0 && product.shirt.map((item, i) => {
+            return product.shirt && product.shirt.length > 0 && product.shirt.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
                         <div className="card" style={{ width: "100%" }}>
-                            <div>
-                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            <Link to={`/detail?type=${item.type}&id=${item._id}`}>
 
-                            </div>
+                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            </Link>
                             <div className="card-body">
                                 <h5 className="card-title custom__name-product">
                                     {item.name}
                                 </h5>
                                 <div className="product__price  d-flex justify-content-between font-weight-bold " >
                                     <p className="card-text ">
-                                        {`Đã bán ${Number(item.currentSold)}`}</p>
+                                        {`Sold ${Number(item.currentSold)}`}</p>
 
-                                    <p className="card-text price-color product__price-new">
+                                    <p className="card-text price-color product__price-new text-bold">
 
-                                        {item.price} đ
+                                        {item.sale > 0 && <del>{item.price} đ</del>}     {item.price * (100 - item.sale) / 100} đ
                                     </p>
                                 </div>
                                 <div className="home-product-item__action">
@@ -143,7 +185,7 @@ function ProductYouLike({ setCart }) {
                                     <div className="product__amount w-100">
                                         <div className="product__wap-change d-flex justify-content-center">
                                             <p for="" className="soluong">Nhập số lượng: </p>
-                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' />
+                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' min='0' />
                                         </div>
                                     </div>
                                 </div>
@@ -166,21 +208,21 @@ function ProductYouLike({ setCart }) {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
                         <div className="card" style={{ width: "100%" }}>
-                            <div>
-                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            <Link to={`/detail?type=${item.type}&id=${item._id}`}>
 
-                            </div>
+                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            </Link>
                             <div className="card-body">
                                 <h5 className="card-title custom__name-product">
                                     {item.name}
                                 </h5>
                                 <div className="product__price  d-flex justify-content-between font-weight-bold " >
                                     <p className="card-text ">
-                                        {`Đã bán ${Number(item.currentSold)}`}</p>
+                                        {`Sold ${Number(item.currentSold)}`}</p>
 
-                                    <p className="card-text price-color product__price-new">
+                                    <p className="card-text price-color product__price-new text-bold">
 
-                                        {item.price} đ
+                                        {item.sale > 0 && <del>{item.price} đ</del>}     {item.price * (100 - item.sale) / 100} đ
                                     </p>
                                 </div>
                                 <div className="home-product-item__action">
@@ -225,7 +267,7 @@ function ProductYouLike({ setCart }) {
                                     <div className="product__amount w-100">
                                         <div className="product__wap-change d-flex justify-content-center">
                                             <p for="" className="soluong">Nhập số lượng: </p>
-                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' />
+                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' min='0' />
                                         </div>
                                     </div>
                                 </div>
@@ -244,25 +286,25 @@ function ProductYouLike({ setCart }) {
             })
         }
         else if (localPath === '/shoes') {
-            return product.shoes && product.shoes.length > 0 && product.shoes.length > 0 && product.shoes.map((item, i) => {
+            return product.shoes && product.shoes.length > 0 && product.shoes.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
                         <div className="card" style={{ width: "100%" }}>
-                            <div>
-                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            <Link to={`/detail?type=${item.type}&id=${item._id}`}>
 
-                            </div>
+                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            </Link>
                             <div className="card-body">
                                 <h5 className="card-title custom__name-product">
                                     {item.name}
                                 </h5>
                                 <div className="product__price  d-flex justify-content-between font-weight-bold " >
                                     <p className="card-text ">
-                                        {`Đã bán ${Number(item.currentSold)}`}</p>
+                                        {`Sold ${Number(item.currentSold)}`}</p>
 
-                                    <p className="card-text price-color product__price-new">
+                                    <p className="card-text price-color product__price-new text-bold">
 
-                                        {item.price} đ
+                                        {item.sale > 0 && <del>{item.price} đ</del>}     {item.price * (100 - item.sale) / 100} đ
                                     </p>
                                 </div>
                                 <div className="home-product-item__action">
@@ -307,7 +349,7 @@ function ProductYouLike({ setCart }) {
                                     <div className="product__amount w-100">
                                         <div className="product__wap-change d-flex justify-content-center">
                                             <p for="" className="soluong">Nhập số lượng: </p>
-                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' />
+                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' min='0' />
                                         </div>
                                     </div>
                                 </div>
@@ -326,25 +368,25 @@ function ProductYouLike({ setCart }) {
             })
         }
         else {
-            return product.shoes && product.shoes.length > 0 && product.shoes.length > 0 && product.shoes.map((item, i) => {
+            return product.shoes && product.shoes.length > 0 && product.shoes.map((item, i) => {
                 return (<div className="col-lg-3 col-md-6 col-sm-12 mb-30">
                     <div className="product__new-item">
                         <div className="card" style={{ width: "100%" }}>
-                            <div>
-                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            <Link to={`/detail?type=${item.type}&id=${item._id}`}>
 
-                            </div>
+                                <img className="card-img-top" src={item.img} alt={item.img} />
+                            </Link>
                             <div className="card-body">
                                 <h5 className="card-title custom__name-product">
                                     {item.name}
                                 </h5>
                                 <div className="product__price  d-flex justify-content-between font-weight-bold " >
                                     <p className="card-text ">
-                                        {`Đã bán ${Number(item.currentSold)}`}</p>
+                                        {`Sold ${Number(item.currentSold)}`}</p>
 
-                                    <p className="card-text price-color product__price-new">
+                                    <p className="card-text price-color product__price-new text-bold">
 
-                                        {item.price} đ
+                                        {item.sale > 0 && <del>{item.price} đ</del>}     {item.price * (100 - item.sale) / 100} đ
                                     </p>
                                 </div>
                                 <div className="home-product-item__action">
@@ -389,7 +431,7 @@ function ProductYouLike({ setCart }) {
                                     <div className="product__amount w-100">
                                         <div className="product__wap-change d-flex justify-content-center">
                                             <p for="" className="soluong">Nhập số lượng: </p>
-                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' />
+                                            <input type="number" onChange={() => { setCurrentID(item._id) }} className={`text-input ${item._id}`} placeholder='1' min='0' />
                                         </div>
                                     </div>
                                 </div>

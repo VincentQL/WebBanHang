@@ -209,25 +209,25 @@ function ViewProduct() {
                     <span className="admin-right-header-item col-xl-2 bg-red">
                         <div to={`/admin/item-order/?token=$item.token`}>
 
-                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
+                            <button type="button" className="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
 
-                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div className="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div className="modal-body">
                                             Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("shirt", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" className="btn btn-delete btn-all-item" onClick={() => deleteProduct("shirt", item._id)} data-dismiss="modal">Đồng ý</button>
                                         </div>
                                     </div>
                                 </div>
@@ -279,25 +279,25 @@ function ViewProduct() {
                     <span className="admin-right-header-item col-xl-2 bg-red">
                         <div to={`/admin/item-order/?token=$item.token`}>
 
-                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
+                            <button type="button" className="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
 
-                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div className="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div className="modal-body">
                                             Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("clothes", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" className="btn btn-delete btn-all-item" onClick={() => deleteProduct("clothes", item._id)} data-dismiss="modal">Đồng ý</button>
                                         </div>
                                     </div>
                                 </div>
@@ -347,25 +347,25 @@ function ViewProduct() {
                     <span className="admin-right-header-item col-xl-2 bg-red">
                         <div to={`/admin/item-order/?token=$item.token`}>
 
-                            <button type="button" class="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
+                            <button type="button" className="btn btn-delete btn-all-item" data-toggle="modal" data-target={`#exampleModalCenter${item._id}`}>
                                 Xóa
                             </button>
 
-                            <div class="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div className="modal fade" id={`exampleModalCenter${item._id}`} tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div className="modal-dialog modal-dialog-centered" role="document">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h5 className="modal-title" id="exampleModalLongTitle">Xóa sản phẩm {item.name}</h5>
+                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div className="modal-body">
                                             Bạn có chắc là muốn xóa sản phẩm {item.name} khỏi danh sách sản phẩm. Thao tác này không thể hoàn lại!
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                                            <button type="button" class="btn btn-delete btn-all-item" onClick={() => deleteProduct("shoes", item._id)} data-dismiss="modal">Đồng ý</button>
+                                        <div className="modal-footer">
+                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                                            <button type="button" className="btn btn-delete btn-all-item" onClick={() => deleteProduct("shoes", item._id)} data-dismiss="modal">Đồng ý</button>
                                         </div>
                                     </div>
                                 </div>

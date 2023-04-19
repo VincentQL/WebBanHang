@@ -20,7 +20,7 @@ const Bill = new Schema({
         type: String,
     },
     status: {
-        type: Number // 0 đã đặt, 1 đã xác nhận, 2 đã nhận hàng
+        type: Number // 0 đã đặt, 1 Đang vận chuyển, 2 đã nhận hàng
     },
     time: {
         type: String

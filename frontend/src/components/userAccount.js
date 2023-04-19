@@ -4,9 +4,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import styled from "styled-components";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import styled from "styled-components";
 
 
 const UserAccountSytled = styled.div`
@@ -206,11 +206,11 @@ function UserAccount({ statusLogin, setStatusLogin }) {
     const [profile, setProfile] = useState()
     const [isLogin, setIsLogin] = useState()
     const [bills, setBills] = useState([])
-    const [name,setName] = useState()
-    const [numberPhone,setNumberPhone] = useState()
-    const [date,setDate] = useState()
-    const [address,setAddress] = useState()
-    const [total,setTotal] = useState(0)
+    const [name, setName] = useState()
+    const [numberPhone, setNumberPhone] = useState()
+    const [date, setDate] = useState()
+    const [address, setAddress] = useState()
+    const [total, setTotal] = useState(0)
     async function fetchMyAPI() {
         const config = {
             method: 'GET',
@@ -233,7 +233,7 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                 })
 
             }
-        
+
         })
         setTotal(sum)
     }
@@ -245,6 +245,11 @@ function UserAccount({ statusLogin, setStatusLogin }) {
 
     useEffect(() => {
         const getProfile = JSON.parse(localStorage.getItem('profile'))
+        console.log('profile', getProfile)
+        setName(getProfile.name)
+        setAddress(getProfile.address)
+        setDate(getProfile.birthday)
+        setNumberPhone(getProfile.numberPhone)
         setProfile(getProfile)
     }, [])
     const logoutUser = () => {
@@ -252,12 +257,42 @@ function UserAccount({ statusLogin, setStatusLogin }) {
         localStorage.clear()
         navigate('/')
     }
-  
 
-    const editUser = (e) => {
+
+
+    const updateUser = async () => {
+        if (!name || !address || !numberPhone || !date) {
+            toast.warn("Vui lòng nhập đầy đủ thông tin!")
+        }
+        else {
+            const config = {
+                method: 'PUT',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    name, account: profile.account, password: profile.password, numberPhone: numberPhone, address: address, birthday: date, sex: profile.sex, role: profile.role
+                })
+            }
+            const response = await fetch(`http://localhost:4000/admin/${profile._id}/edit-user`, config)
+            const data = await response.json()
+            localStorage.setItem('profile', JSON.stringify(data.user));
+            setName(data.user.name)
+            setAddress(data.user.address)
+            setDate(data.user.birthday)
+            setNumberPhone(data.user.numberPhone)
+            setProfile(data.user)
+            if (data.success) {
+                toast.success("Chỉnh sửa tài khoản thành công!")
+            }
+            else {
+                toast.warn("Chỉnh sửa tài khoản thất bại, vui lòng thử lại")
+
+            }
+        }
+
 
     }
-
 
     const updateBill = async (id) => {
         console.log('id', id)
@@ -332,7 +367,7 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                         type="text"
                                         className="form-control"
                                         id="exampleInputPassword1"
-                                        value={profile.name ? profile.name : ''}
+                                        value={name}
                                         name="name"
                                         onChange={(e) => setName(e.target.value)}
                                         placeholder="Vui lòng nhập tên của bạn"
@@ -361,7 +396,7 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                         className="form-control"
                                         id="exampleInputPhone"
                                         name="numberPhone"
-                                        value={profile.numberPhone ? profile.numberPhone : ''}
+                                        value={numberPhone}
                                         onChange={(e) => setNumberPhone(e.target.value)}
 
                                         aria-describedby="emailHelp"
@@ -377,8 +412,8 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                         className="form-control"
                                         id="exampleInputPhone"
                                         name="date"
-                                        value={profile.birthday ? profile.birthday : ''}
-                                        onChange={(e)=>setDate(e.target.value)}
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
                                         aria-describedby="emailHelp"
                                         placeholder="Vui lòng nhập số điện thoại"
                                     />
@@ -391,20 +426,19 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                         className="form-control"
                                         id="exampleInputAddress"
                                         name="address"
-                                        value={profile.address ? profile.address : ''}
-                                        onChange={(e)=>setAddress(e.target.value)}
+                                        value={address}
+                                        onChange={(e) => setAddress(e.target.value)}
                                         aria-describedby="emailHelp"
                                         placeholder="Vui lòng nhập địa chỉ"
                                     />
                                 </div>
                                 <div className={"div-btn"}>
-                                    <button
-                                        type="submit"
+                                    <p
                                         className="btn btn-submit"
-                                    onClick={editUser}
+                                        onClick={() => updateUser()}
                                     >
                                         Chỉnh sửa
-                                    </button>
+                                    </p>
                                 </div>
                             </form>
                         </div>
@@ -435,63 +469,62 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                     </span>
                                 </li>
                                 {bills.length > 0 && bills.map((item, i) => {
-                                    console.log(item)
-                                    if (item.status !== 2) {
-                                        let product = JSON.parse(item.arrProduct)
-                                        let total = 0
-                                        product.map(value => {
-                                            total = Number(item.price) * (value.sizeS + value.sizeM + value.sizeL)
-                                        })
+                                    const user = JSON.parse(item.user)
+                                    if (user._id === profile._id) {
+                                        if (item.status !== 2) {
+                                            let product = JSON.parse(item.arrProduct)
+                                            let total = 0
 
-                                        return (
-                                            <li
-                                                className="cart-right-item col-xl-12"
-                                                key={item._id}
-                                            >
-                                                <span className={"cart-right-item-header col-xl-2"} style={{
-                                                    wordWrap: "break-word"
-                                                }}>
-                                                    {item._id}
+                                            return (
+                                                <li
+                                                    className="cart-right-item col-xl-12"
+                                                    key={item._id}
+                                                >
+                                                    <span className={"cart-right-item-header col-xl-2"} style={{
+                                                        wordWrap: "break-word"
+                                                    }}>
+                                                        {item._id}
 
-                                                </span>
-                                                <span className={"cart-right-item-header col-xl-3"}>
-                                                    {product.map(item => {
-                                                        return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
-                                                            {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
-                                                            {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
-                                                    })
-                                                    }
-                                                </span>
+                                                    </span>
+                                                    <span className={"cart-right-item-header col-xl-3"}>
+                                                        {product.map(item => {
+                                                            return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
+                                                                {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
+                                                                {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
+                                                        })
+                                                        }
+                                                    </span>
 
-                                                <span className={"col-xl-2"}> {item.createdAt}</span>
-                                                <span className={"col-xl-2 sumPrice"}>
-                                                    {total} VND
-                                                </span>
-                                                <span className={"col-xl-1 "}>
-                                                    {item.status === 0 ? "Chưa xác nhận" : " Đã xác nhận"}
+                                                    <span className={"col-xl-2"}> {item.createdAt}</span>
+                                                    <span className={"col-xl-2 sumPrice"}>
+                                                        {item.price} VND
+                                                    </span>
+                                                    <span className={"col-xl-1 "}>
+                                                        {item.status === 0 ? "Chưa xác nhận" : " Đang vận chuyển"}
 
-                                                </span>
-                                                <span className={"col-xl-2 "}>
-                                                    <div>
-                                                        {item.status === 1 ? <button type="submit" className="btn btn-submit btn-all-item" onClick={() => updateBill(item._id)} style={{
-                                                            width: "100%",
-                                                            fontSize: "13px",
-                                                            padding: "14px"
-                                                        }}>
-                                                            Xác nhận
-                                                        </button>: <button type="submit" className="btn btn-submit btn-all-item"disabled style={{
-                                                            width: "100%",
-                                                            fontSize: "13px",
-                                                            padding: "14px",
-                                                            background: "#ccc"
-                                                        }}>
-                                                           Chưa thể xác nhận
-                                                        </button> }
-                                                        
-                                                    </div>
-                                                </span>
-                                            </li>
-                                        );
+                                                    </span>
+                                                    <span className={"col-xl-2 "}>
+                                                        <div>
+                                                            {item.status === 1 ? <button type="submit" className="btn btn-submit btn-all-item" onClick={() => updateBill(item._id)} style={{
+                                                                width: "100%",
+                                                                fontSize: "13px",
+                                                                padding: "14px"
+                                                            }}>
+                                                                Xác nhận
+                                                            </button> : <button type="submit" className="btn btn-submit btn-all-item" disabled style={{
+                                                                width: "100%",
+                                                                fontSize: "13px",
+                                                                padding: "14px",
+                                                                background: "#ccc"
+                                                            }}>
+                                                                Chưa thể xác nhận
+                                                            </button>}
+
+                                                        </div>
+                                                    </span>
+                                                </li>
+                                            );
+                                        }
                                     }
 
                                 })
@@ -522,48 +555,47 @@ function UserAccount({ statusLogin, setStatusLogin }) {
                                     </span>
                                 </li>
                                 {bills.length > 0 && bills.map((item, i) => {
-                                    if (item.status === 2) {
-                                        let product = JSON.parse(item.arrProduct)
-                                        let total = 0
-                                        product.map(value => {
-                                            total = Number(item.price) * (value.sizeS + value.sizeM + value.sizeL)
-                                        })
+                                    const user = JSON.parse(item.user)
+                                    if (user._id === profile._id) {
 
-                                        return (
-                                            <li
-                                                className="cart-right-item col-xl-12"
-                                                key={item._id}
-                                            >
-                                                <span className={"cart-right-item-header col-xl-3"}>
-                                                    {item._id}
+                                        if (item.status === 2) {
+                                            let product = JSON.parse(item.arrProduct)
 
-                                                </span>
-                                                <span className={"cart-right-item-header col-xl-3"}>
-                                                    {product.map(item => {
-                                                        return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
-                                                            {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
-                                                            {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
-                                                    })
-                                                    }
-                                                </span>
 
-                                                <span className={"col-xl-2"}> {item.createdAt}</span>
-                                                <span className={"col-xl-2 sumPrice"}>
-                                                    {total} VND
-                                                </span>
-                                                <span className={"col-xl-2 "}>
-                                                    Đã nhận hàng
-                                                </span>
-                                            </li>
-                                        );
+                                            return (
+                                                <li
+                                                    className="cart-right-item col-xl-12"
+                                                    key={item._id}
+                                                >
+                                                    <span className={"cart-right-item-header col-xl-3"}>
+                                                        {i}
+
+                                                    </span>
+                                                    <span className={"cart-right-item-header col-xl-3"}>
+                                                        {product.map(item => {
+                                                            return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
+                                                                {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
+                                                                {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
+                                                        })
+                                                        }
+                                                    </span>
+
+                                                    <span className={"col-xl-2"}> {item.createdAt}</span>
+                                                    <span className={"col-xl-2 sumPrice"}>
+                                                        {item.price} VND
+                                                    </span>
+                                                    <span className={"col-xl-2 "}>
+                                                        Đã nhận hàng
+                                                    </span>
+                                                </li>
+                                            );
+                                        }
                                     }
-                                
+
                                 })
                                 }
-                                <li className="cart-right-header col-xl-12">
-                                    Tổng tiền mua hàng: {total} VND
-                                </li>
-                                
+
+
 
                             </ul>
                         </div>

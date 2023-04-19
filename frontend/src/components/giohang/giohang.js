@@ -239,7 +239,7 @@ class Cart extends React.Component {
         let value = 0;
         if (listProduct && listProduct.length > 0) {
             value = listProduct.reduce((total, item) => {
-                return total + Number(item.amount) * item.item.price;
+                return total + Number(item.amount) * item.item.price * (100 - item.item.sale) / 100;
             }, 0);
         }
         this.setState({
@@ -254,7 +254,7 @@ class Cart extends React.Component {
             result = listProduct.map((item, index) => {
                 this.state.sum += item.sum;
                 return (
-                    <li className="cart-right-item col-xl-12" key={item.item._id}>
+                    <li className="cart-right-item col-xl-12" key={index}>
                         <span className={"cart-right-item-header col-xl-4"}>
                             {item.item.name}
                         </span>
@@ -295,7 +295,7 @@ class Cart extends React.Component {
                         </div>
                         <span className={"col-xl-2"}>{item.size}</span>
                         <span className={"col-xl-3 sumPrice"}>
-                            {Number(item.amount) * item.item.price} VND{" "}
+                            {item.item.sale > 0 && <del>{Number(item.amount) * item.item.price} VND</del>} {Number(item.amount) * item.item.price * (100 - item.item.sale) / 100} VND
                             <ClearIcon
                                 className={"icon-clear"}
                                 onClick={() => this.deleteItem(item)}
@@ -318,12 +318,19 @@ class Cart extends React.Component {
 
     deleteItem = (item) => {
         let { listProduct } = this.state;
-        this.setState({ a: !this.state.a });
-        if (listProduct && listProduct.length > 0) {
-            this.props.deleteItemInCart(item);
-            this.sumValue(listProduct);
-            this.renderListProduct(this.state.listProduct);
+        let tempArr = listProduct
+        let index = tempArr.indexOf(item);
+        if (index > -1) { // only splice array when item is found
+            tempArr.splice(index, 1); // 2nd parameter means remove one item only
         }
+        console.log('index', index)
+        // this.props.setCart(newArr)
+
+        console.log(tempArr)
+        this.props.setCart(tempArr)
+        // this.setState({ a: !this.state.a });
+        this.sumValue(listProduct);
+        this.renderListProduct(this.state.listProduct);
     };
 
     handleInput = (e) => {
@@ -335,7 +342,7 @@ class Cart extends React.Component {
         switch (name) {
             case "name":
                 errors.name =
-                    value.length < 5 ? "Full Name must be 5 characters long!" : "";
+                    value.length < 5 ? "Tên phải dài hơn 5 kí tự" : "";
                 break;
             case "email":
                 errors.email = validEmailRegex.test(value)
@@ -344,11 +351,11 @@ class Cart extends React.Component {
                 break;
             case "numberPhone":
                 errors.numberPhone =
-                    value.length < 8 ? "SDT ít nhất phải có 8 chữ số!!!" : "";
+                    value.length < 8 ? "SDT ít nhất phải có 11 chữ số!!!" : "";
                 break;
             case "address":
                 errors.address =
-                    value.length < 8 ? "Người anh em cho tôi xin cái địa chỉ!!!" : "";
+                    value.length < 8 ? "Vui lòng nhập địa chỉ của bạn!!!" : "";
                 break;
             default:
                 break;
@@ -360,26 +367,27 @@ class Cart extends React.Component {
         console.log("this.props.userInfo", this.props)
         let today = new Date().toISOString().slice(0, 10)
 
+        let result = []
+        this.state.listProduct.forEach(function (a) {
+            if (!this[a.item._id]) {
+                this[a.item._id] = { id: a.item._id, sizeS: 0, sizeM: 0, sizeL: 0, item: a.item };
+                result.push(this[a.item._id]);
+            }
+            if (a.size === 'S') {
+                console.log("this[a.item._id].sizeS", typeof this[a.item._id].sizeS)
+                this[a.item._id].sizeS += Number(a.amount);
+            }
+            else if (a.size == 'M') {
+                this[a.item._id].sizeM += Number(a.amount);
+            }
+            else if (a.size == 'L') {
+                this[a.item._id].sizeL += Number(a.amount);
+            }
+        }, Object.create(null));
+
         if (this.props.userLoggedIn) {
             const getProfile = JSON.parse(localStorage.getItem('profile'))
             console.log("getProfile", getProfile)
-            let result = []
-            this.state.listProduct.forEach(function (a) {
-                if (!this[a.item._id]) {
-                    this[a.item._id] = { id: a.item._id, sizeS: 0, sizeM: 0, sizeL: 0, item: a.item };
-                    result.push(this[a.item._id]);
-                }
-                if (a.size === 'S') {
-                    console.log("this[a.item._id].sizeS", typeof this[a.item._id].sizeS)
-                    this[a.item._id].sizeS += Number(a.amount);
-                }
-                else if (a.size == 'M') {
-                    this[a.item._id].sizeM += Number(a.amount);
-                }
-                else if (a.size == 'L') {
-                    this[a.item._id].sizeL += Number(a.amount);
-                }
-            }, Object.create(null));
             console.log(result);
 
             let obj = {
@@ -405,6 +413,10 @@ class Cart extends React.Component {
                 this.setState({
                     sumProduct: 0,
                     listProduct: [],
+                    name: "",
+                    email: "",
+                    numberPhone: "",
+                    address: "",
                 });
                 this.props.setCart([])
                 toast.success("Bạn đã đặt hàng thành công")
@@ -413,18 +425,19 @@ class Cart extends React.Component {
                 toast.warn("Vui lòng nhập thông tin để xác nhận!");
             }
         } else {
-            // name: "",
-            // email: "",
-            // numberPhone: "",
-            // address: "",
-            alert("day la truogn hop chua login");
             let obj = {
-                name: this.state.name,
-                listProduct: JSON.stringify(this.state.listProduct),
+                user: JSON.stringify({
+                    name: this.state.name,
+                    numberPhone: this.state.numberPhone,
+                    address: this.state.address,
+                    birthday: 'null',
+                    sex: 'null',
+                    role: 'null'
+                }),
+                arrProduct: JSON.stringify(result),
                 price: this.state.sumProduct,
-                address: this.state.address,
-                numberPhone: this.state.numberPhone,
-                email: this.state.email,
+                status: 0,
+                time: today
             };
             let checkForm = validateForm(this.state.errors);
             if (checkForm && this.state.listProduct.length > 0 && this.state.numberPhone.length > 0) {
@@ -435,28 +448,20 @@ class Cart extends React.Component {
                     },
                     body: JSON.stringify(obj)
                 }
-                const response = await fetch("http://localhost:4000/admin/create-product", config)
+                const response = await fetch("http://localhost:4000/admin/create-bill", config)
                 const data = await response.json()
-                console.log('data')
                 if (data) {
                     this.setState({
-                        listProduct: [],
                         sumProduct: 0,
-                        a: false,
-                        isLogin: false,
-                        name: "",
-                        email: "",
-                        numberPhone: "",
-                        address: "",
+                        listProduct: [],
                     });
+                    this.props.setCart([])
                     toast.success("Bạn đã đặt hàng thành công")
                 }
-                // let value = await services.userServices.OderConfirm(obj);
-                // if (value.data && value.data.errCode === 0) {
+                else {
+                    toast.warn("Vui lòng nhập thông tin để xác nhận!");
+                }
 
-                //   toast.success("Đặt hàng thành công!");
-                //   this.props.clearListCart();
-                // }
             }
             else {
                 toast.warn("Vui lòng nhập thông tin để xác nhận!");

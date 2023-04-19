@@ -116,23 +116,6 @@ class AdminController {
             });
         }
 
-        // if (req.body) {
-        //     req.body = new Bill(req.body);
-        //     req.body
-        //         .save()
-        //         .then(() =>
-        //             res.json({
-        //                 success: true,
-        //             })
-        //         )
-        //         .catch(next);
-        // }
-        // else {
-        //     return res.status(500).json({
-        //         errCode: 1,
-        //         mess: "Thông tin rỗng, vui lòng nhập lại",
-        //     });
-        // }
 
 
     }
@@ -209,9 +192,11 @@ class AdminController {
             });
         } else {
             console.log("thanh cong", req.body)
+
             User.updateOne({ _id: req.params.id }, req.body)
-                .then(() => {
-                    return res.json({ errCode: 0, success: true, message: "Update user thành công" });
+                .then(async() => {
+                    const user = await User.findOne({ account: req.body.account })
+                    return res.json({ errCode: 0, success: true, message: "Update user thành công", user: user });
                 })
 
         }

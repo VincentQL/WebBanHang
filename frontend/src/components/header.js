@@ -11,6 +11,14 @@ const HeaderStyled = styled.div`
     border: 1px solid;
     margin: 6px;
     }
+    .header-active{
+        position: fixed;
+    top: 0;
+    height: 100px;
+    z-index: 10000;
+    /* right: 0; */
+    width: 100%;
+    }
     nav .sidebar-button {
         display: flex;
         align-items: center;
@@ -63,11 +71,12 @@ const HeaderStyled = styled.div`
     }
 `
 
-function Header({ isLogin, isAdmin }) {
+function Header({ isLogin, isAdmin, fixedHeader }) {
     console.log('isLogin', isLogin)
     const [active, setActive] = useState(false)
     const [textSearch, setTextSearch] = useState('')
     const [products, setProducts] = useState([])
+    const [arrSearch, setArrSearch] = useState([])
 
     async function fetchMyAPI() {
         const config = {
@@ -82,8 +91,6 @@ function Header({ isLogin, isAdmin }) {
         let result = data.shirt.concat(data.clothes).concat(data.shoes)
         setProducts(result);
     }
-
-
 
     useEffect(() => {
         fetchMyAPI()
@@ -111,18 +118,42 @@ function Header({ isLogin, isAdmin }) {
     }
 
     function searchProduct(keyword) {
-        return products.filter((product) => {
-          return (
-            product.deleted === false &&
-            (product.name.toLowerCase().includes(keyword) || product._id.toLowerCase().includes(keyword))
-          );
-        });
-      }
+        if (keyword) {
+            return products.filter((product) => {
+                return (
+                    product.deleted === false &&
+                    (product.name.toLowerCase().includes(keyword) || product.color.toLowerCase().includes(keyword))
+                );
+            });
 
+        }
+        else {
+            return ''
+        }
+    }
+
+    const renderSearch = () => {
+        return arrSearch && arrSearch.length > 0 && arrSearch.map((item, i) => {
+            if (i < 6) {
+
+                return (<Link to={`/detail?type=${item.type}&id=${item._id}`} onClick={() => setActive(!active)} className="item-search d-flex col-xl-12" style={{ textDecoration: "none", color: "black" }}>
+                    <img className='col-xl-5' src={item.img} alt="" />
+                    <div className="detail-item col-xl-7">
+                        <p className="detail-item__name">
+                            {item.name}
+                        </p>
+                        <span>
+                            {item.price} VND
+                        </span>
+                    </div>
+                </Link>)
+            }
+        })
+    }
     return (
         <HeaderStyled>
             <div className="header">
-                <div className="header__logo d-flex col-xl-12">
+                <div className={fixedHeader ? "header__logo header-active d-flex col-xl-12" : "header__logo d-flex col-xl-12"} >
                     <div href="#" className="div-img col-xl-2">
                         <NavLink to="/" >  <NavLink to="/" ><img src={Logo} alt="" /></NavLink> </NavLink>
                         <NavLink to="/" className="trangchu">Trang chủ</NavLink>
@@ -153,12 +184,17 @@ function Header({ isLogin, isAdmin }) {
                                 <input type="text" value={textSearch} onChange={(e) => {
                                     setTextSearch(e.target.value)
                                     let arr = searchProduct(e.target.value)
-                                    console.log('arr',arr)
+                                    console.log('arr', arr)
+                                    setArrSearch(arr)
                                 }} placeholder="Search..." />
                                 <i className='bx bx-search' onClick={() => {
                                     active === false && setTextSearch('')
+                                    setArrSearch([])
                                     setActive(!active)
                                 }}></i>
+                                {active && <div className="items-search">
+                                    {renderSearch()}
+                                </div>}
                             </div>
                         </nav>
                         <div className="col-xl-6 d-flex">

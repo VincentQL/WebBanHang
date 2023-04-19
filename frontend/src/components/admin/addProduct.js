@@ -1,13 +1,10 @@
-import React from "react";
 import MarkdownIt from "markdown-it";
+import React, { useState } from "react";
+import "react-image-lightbox/style.css";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
-import Select from "react-select";
-import Lightbox from "react-image-lightbox";
-import "react-image-lightbox/style.css";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import styled from "styled-components";
-import { useState } from "react";
 
 
 const AddProductStyled = styled.div`
@@ -298,7 +295,7 @@ function AddProduct() {
                                 <div className="form-group col-xl-6">
                                     <label htmlFor="exampleInputPassword1">Danh mục sản phẩm:</label>
                                     <select
-                                        class="form-control"
+                                        className="form-control"
                                         id="exampleFormControlSelect1"
                                         value={type}
                                         onChange={(e) => setType(e.target.value)}

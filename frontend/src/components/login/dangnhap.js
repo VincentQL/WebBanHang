@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "./login.css";
 
 
@@ -28,7 +28,7 @@ function Login({ statusLogin, setStatusLogin, setIsLogin }) {
                 const response = await fetch("http://localhost:4000/login", config)
                 const data = await response.json()
                 localStorage.setItem('profile', JSON.stringify(data.user));
-                console.log('data.user', data.user)
+                console.log('data.user', data)
                 if (data.errCode == '0') {
                     setIsLogin(true)
                     localStorage.setItem('isLogin', true);
@@ -41,6 +41,9 @@ function Login({ statusLogin, setStatusLogin, setIsLogin }) {
                         navigate("/profile")
                     }
 
+                }
+                else {
+                    toast.warn("Tài khoản hoặc mật khẩu không đúng, vui lòng nhập lại!")
                 }
 
             }
