@@ -114,127 +114,127 @@ const CalculateStyled = styled.div`
 }
 `
 function HistoryOrder() {
-    const [bills, setBills] = useState([])
-    function groupByTime(arr) {
-        const result = [];
-        let currentArr = [];
+  const [bills, setBills] = useState([])
+  function groupByTime(arr) {
+    const result = [];
+    let currentArr = [];
 
-        arr.forEach((obj, index) => {
-            if (index === 0) {
-                currentArr.push(obj);
-            } else if (obj.time === arr[index - 1].time) {
-                currentArr.push(obj);
-            } else {
-                result.push(currentArr);
-                currentArr = [obj];
-            }
-        });
-
+    arr.forEach((obj, index) => {
+      if (index === 0) {
+        currentArr.push(obj);
+      } else if (obj.time === arr[index - 1].time) {
+        currentArr.push(obj);
+      } else {
         result.push(currentArr);
+        currentArr = [obj];
+      }
+    });
 
-        return result;
+    result.push(currentArr);
+
+    return result;
+  }
+
+  async function fetchMyAPI() {
+    const config = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+      },
+
     }
+    const response = await fetch("http://localhost:4000/admin/get-bill", config)
+    const data = await response.json()
+    setBills([])
+    setBills(data.bills);
+  }
 
-    async function fetchMyAPI() {
-        const config = {
-            method: 'GET',
-            headers: {
-                "Content-Type": "application/json",
-            },
+  useEffect(() => {
+    fetchMyAPI()
 
-        }
-        const response = await fetch("http://localhost:4000/admin/get-bill", config)
-        const data = await response.json()
-        setBills([])
-        setBills(data.bills);
+  }, [])
+
+
+  const renderStatus = (item) => {
+    if (item.status === 0) {
+      return (<>Chưa xác nhận</>)
     }
-
-    useEffect(() => {
-        fetchMyAPI()
-
-    }, [])
-
-
-    const renderStatus = (item) => {
-        if (item.status === 0) {
-            return (<>Chưa xác nhận</>)
-        }
-        if (item.status === 1) {
-            return (<>Đang vận chuyển</>)
-        }
-        else {
-            return (<>Đã nhận hàng</>)
-
-        }
+    if (item.status === 1) {
+      return (<>Đang vận chuyển</>)
     }
+    else {
+      return (<>Đã nhận hàng</>)
 
-  
+    }
+  }
 
-    const renderListProduct = () => {
-        return bills.length > 0 && bills.map((item, i) => {
-            let user = JSON.parse(item.user)
-            let product = JSON.parse(item.arrProduct)
-            return (
-                <li className="admin-right-item col-xl-12" key={item._id}>
-                    <span className="admin-right-header-item col-xl-1" style={{ wordWrap: "break-word" }}>{i}</span>
-                    <span className="admin-right-header-item col-xl-2">
-                        {user.name}
 
-                    </span>
-                    <div className="admin-right-headfr-item col-xl-3">
-                        {product.map(item => {
-                            return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
-                                {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
-                                {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
-                        })
-                        }
 
-                    </div>
-                    <span className="admin-right-header-item col-xl-1"> {item.price}</span>
-                    <span className="admin-right-header-item col-xl-1"> {renderStatus(item)} </span>
-                    <span className="admin-right-header-item col-xl-2">
-                        {item.time}
-                    </span>
+  const renderListProduct = () => {
+    return bills.length > 0 && bills.map((item, i) => {
+      let user = JSON.parse(item.user)
+      let product = JSON.parse(item.arrProduct)
+      return (
+        <li className="admin-right-item col-xl-12" key={item._id}>
+          <span className="admin-right-header-item col-xl-1" style={{ wordWrap: "break-word" }}>{i}</span>
+          <span className="admin-right-header-item col-xl-2">
+            {user.name}
 
-                </li>)
-        })
-    };
+          </span>
+          <div className="admin-right-headfr-item col-xl-3">
+            {product.map(item => {
+              return (<div>{item.sizeS > 0 && <p>{item.item.name} size S : {item.sizeS}</p>}
+                {item.sizeM > 0 && <p>{item.item.name} size M : {item.sizeM}</p>}
+                {item.sizeL > 0 && <p>{item.item.name} size L : {item.sizeL}</p>}  </div>)
+            })
+            }
 
-    return (
-        <CalculateStyled>
-            <div className="adminPage-body ">
-                <p className="admin-title">
-                    <ReceiptIcon />
-                    Tất cả đơn hàng
-                </p>
-                <div className="admin">
-                    <div className="admin-right ">
-                        <p className="admin-right-text">Thông tin đơn hàng</p>
-                        <ul className="table admin-right-items">
-                           
-                            <li className="admin-right-header col-xl-12">
-                                <span className="admin-right-header-item col-xl-1">STT</span>
-                                <span className="admin-right-header-item col-xl-2">
-                                    Tên khách
-                                </span>
-                                <span className="admin-right-header-item col-xl-3">
-                                    Sản phẩm
-                                </span>
-                                <span className="admin-right-header-item col-xl-1">Tổng</span>
-                                <span className="admin-right-header-item col-xl-1">Trạng thái</span>
-                                <span className="admin-right-header-item col-xl-2">
-                                    Thời gian
-                                </span>
+          </div>
+          <span className="admin-right-header-item col-xl-1"> {item.price}</span>
+          <span className="admin-right-header-item col-xl-1"> {renderStatus(item)} </span>
+          <span className="admin-right-header-item col-xl-2">
+            {item.time}
+          </span>
 
-                            </li>
-                            {renderListProduct()}
+        </li>)
+    })
+  };
 
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </CalculateStyled>
-    );
+  return (
+    <CalculateStyled>
+      <div className="adminPage-body ">
+        <p className="admin-title">
+          <ReceiptIcon />
+          Tất cả đơn hàng
+        </p>
+        <div className="admin">
+          <div className="admin-right ">
+            <p className="admin-right-text">Thông tin đơn hàng</p>
+            <ul className="table admin-right-items">
+
+              <li className="admin-right-header col-xl-12">
+                <span className="admin-right-header-item col-xl-1">STT</span>
+                <span className="admin-right-header-item col-xl-2">
+                  Tên khách
+                </span>
+                <span className="admin-right-header-item col-xl-3">
+                  Sản phẩm
+                </span>
+                <span className="admin-right-header-item col-xl-1">Tổng</span>
+                <span className="admin-right-header-item col-xl-1">Trạng thái</span>
+                <span className="admin-right-header-item col-xl-2">
+                  Thời gian
+                </span>
+
+              </li>
+              {renderListProduct()}
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </CalculateStyled>
+  );
 }
 
 

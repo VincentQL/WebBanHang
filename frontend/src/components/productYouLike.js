@@ -28,13 +28,16 @@ function ProductYouLike({ setCart, cart }) {
             let index = -1
             let tempCart = cart
             console.log('tempCart', tempCart)
-            for (let i = 0; i < tempCart.length; i++) {
-                if (tempCart[i].item._id === item._id && tempCart[i].size === size) {
-                    let newValue = Number(tempCart[i].amount) + Number(amount)
-                    tempCart[i].amount = newValue
-                    index = i
+            tempCart && tempCart.map(item => {
+                for (let i = 0; i < tempCart.length; i++) {
+                    if (item.item._id === item._id && item.size === size) {
+                        let newValue = Number(item.amount) + Number(amount)
+                        item.amount = newValue
+                        index = i
+                    }
                 }
-            }
+            })
+
             console.log("tempCart", tempCart)
             if (index === -1) {
                 if (size === 'S') {
